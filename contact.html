@@ -3,103 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | PT Plumbing Inc.</title>
-    <meta name="description" content="Contact PT Plumbing Inc. for emergency repairs, water heater service, or luxury installations. Fast response guaranteed.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <title>Contact PT Plumbing Inc. | 24/7 Dispatch</title>
+    <!-- Social Preview Logic -->
+    <meta property="og:title" content="PT Plumbing Inc. - Emergency Dispatch">
+    <meta property="og:description" content="Click to request immediate service. 24/7 Response time for active leaks.">
+    <meta property="og:image" content="assets/pt-logo-main.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="scroll-tracker"></div>
-
     <nav class="glass-nav">
         <div class="nav-container">
-            <a href="index.html" class="brand-logo">PT <span>PLUMBING</span></a>
+            <a href="index.html" class="brand-logo">
+                <!-- Using Logo B (Text) here as it is wider -->
+                <img src="assets/pt-logo-text.png" alt="PT Plumbing" style="height: 50px; mix-blend-mode: screen;">
+            </a>
             <div class="desktop-menu">
                 <a href="index.html" class="menu-item">Home</a>
                 <a href="services.html" class="menu-item">Services</a>
                 <a href="about.html" class="menu-item">Our Story</a>
                 <a href="contact.html" class="menu-item active">Contact</a>
-                <div class="status-indicator">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Techs Available</span>
-                </div>
             </div>
-            <button class="mobile-toggle" onclick="toggleMobileNav()">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
         </div>
     </nav>
 
-    <div id="mobile-overlay">
-        <div class="mobile-links">
-            <a href="index.html">Home</a>
-            <a href="services.html">Services</a>
-            <a href="about.html">Our Story</a>
-            <a href="contact.html">Contact</a>
-            <a href="tel:5551234567" class="mobile-cta">Call (555) 123-4567</a>
-        </div>
-    </div>
-
     <main>
-        <header class="page-hero hero-contact">
-            <div class="hero-overlay-dark">
-                <h1>We Are Ready.</h1>
-            </div>
-        </header>
-
         <section class="contact-interface">
             <div class="interface-container">
                 <div class="contact-details">
-                    <h2>Reach The Office</h2>
-                    <p class="desc">When you call PT Plumbing, you speak to a local expert, not a robot.</p>
+                    <!-- Logo A (Shield) used here for trust -->
+                    <img src="assets/pt-logo-main.jpg" style="width: 120px; border-radius: 10px; margin-bottom: 20px;">
+                    <h2>Dispatch & HQ</h2>
+                    <p class="desc">Direct access to Master Plumbers. No call centers.</p>
                     
                     <div class="info-block">
-                        <h4>Headquarters</h4>
-                        <p>123 Service Avenue, Suite 100<br>Metropolis, NY 10012</p>
-                    </div>
-
-                    <div class="info-block">
-                        <h4>24/7 Phone Line</h4>
-                        <a href="tel:5551234567" class="contact-link">(555) 123-4567</a>
-                    </div>
-
-                    <div class="info-block">
-                        <h4>Email Support</h4>
-                        <a href="mailto:service@ptplumbing.com" class="contact-link">service@ptplumbing.com</a>
+                        <h4>Emergencies</h4>
+                        <a href="tel:5551234567" class="phone-large">(555) 123-4567</a>
                     </div>
                 </div>
 
                 <div class="form-wrapper">
-                    <form id="contactForm" class="premium-form">
-                        <h3>Send a Message</h3>
+                    <!-- ACTION REQUIRED: This form uses Formspree. It will ask you to verify your email once upon first submission. -->
+                    <form action="https://formspree.io/f/mqkvvjaz" method="POST" class="premium-form" id="contact-form">
+                        <h3>Secure Service Request</h3>
                         
                         <div class="input-group">
                             <label>Full Name</label>
-                            <input type="text" required placeholder="John Doe">
+                            <input type="text" name="name" required placeholder="Name">
                         </div>
-
                         <div class="input-group">
-                            <label>Service Needed</label>
-                            <select id="serviceType" onchange="checkEmergency(this)" required>
-                                <option value="">Select an option...</option>
-                                <option value="emergency">🚨 EMERGENCY (Leak/Flood)</option>
-                                <option value="repair">General Repair</option>
-                                <option value="quote">Quote / Installation</option>
+                            <label>Phone (Mobile preferred)</label>
+                            <input type="tel" name="phone" required placeholder="(555) 123-4567">
+                        </div>
+                        <div class="input-group">
+                            <label>Issue Type</label>
+                            <select name="service" required>
+                                <option value="General">General Inquiry</option>
+                                <option value="Emergency">⚠️ Emergency (Leak/Flood)</option>
+                                <option value="Quote">Quote</option>
                             </select>
                         </div>
-
-                        <div id="emergency-alert" style="display:none; color:red; margin-bottom:15px; font-weight:700;">
-                            ⚠️ For flooding, call (555) 123-4567 immediately.
-                        </div>
-
                         <div class="input-group">
-                            <label>How can we help?</label>
-                            <textarea rows="4" placeholder="Describe your issue..."></textarea>
+                            <label>Details</label>
+                            <textarea name="message" rows="3"></textarea>
                         </div>
-
-                        <button type="submit" class="submit-btn">Submit Request</button>
+                        <button type="submit" class="submit-btn">Transmit Request</button>
                     </form>
                 </div>
             </div>
@@ -107,40 +75,14 @@
     </main>
 
     <footer class="site-footer">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="logo-large">PT <span>PLUMBING</span></div>
-                <p>Engineering comfort and safety for the modern home.</p>
-            </div>
-            <div class="footer-contact">
-                <a href="tel:5551234567" class="phone-large">(555) 123-4567</a>
-            </div>
-        </div>
         <div class="footer-bottom">
             <div class="copyright">© 2025 PT Plumbing Inc. All Rights Reserved.</div>
+            <div class="created-by" style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 10px; opacity: 0.4;">
+                <span style="font-size: 0.8rem;">Digital Architecture by:</span>
+                <img src="assets/created-by-dye.png" alt="Dye Security" title="Dye Security" style="height: 20px;">
+                <img src="assets/created-by-void.jpg" alt="Voidborn" title="Voidborn" style="height: 20px; border-radius: 50%;">
+            </div>
         </div>
     </footer>
-
-    <a href="tel:5551234567" class="mobile-sticky-bar">TAP TO CALL NOW</a>
-    <script src="script.js"></script>
-    <script>
-        function checkEmergency(select) {
-            const alertBox = document.getElementById('emergency-alert');
-            alertBox.style.display = select.value === 'emergency' ? 'block' : 'none';
-        }
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.querySelector('.submit-btn');
-            const originalText = btn.innerText;
-            btn.innerText = 'Sent!';
-            btn.style.background = '#333';
-            setTimeout(() => { 
-                alert('Request Received!'); 
-                this.reset();
-                btn.innerText = originalText;
-                btn.style.background = '#B87333';
-            }, 1000);
-        });
-    </script>
 </body>
 </html>
