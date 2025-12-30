@@ -3,79 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact & Dispatch | PT Plumbing</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <title>Dispatch Control | PT Plumbing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="fade-in">
-    <nav class="glass-nav">
-        <div class="nav-container">
-            <a href="index.html" class="brand-logo">PT <span>Plumbing</span></a>
-            <div class="desktop-menu">
-                <a href="index.html">HOME</a>
-                <a href="services.html">SERVICES</a>
-                <a href="about.html">ABOUT</a>
-                <a href="contact.html">CONTACT</a>
-                <div class="status-indicator">
-                    <span class="status-dot"></span> <span class="status-text-dynamic">STATUS</span>
+<body>
+    <div class="app-wrapper">
+        <nav class="main-navigation">
+            <div class="nav-content">
+                <a href="index.html" class="brand-block">
+                    <div class="brand-title">PT <span>Plumbing</span></div>
+                </a>
+                <div class="nav-links-desktop">
+                    <a href="index.html" class="nav-link">Control</a>
+                    <a href="services.html" class="nav-link">Operations</a>
+                    <a href="about.html" class="nav-link">Logistics</a>
+                    <a href="contact.html" class="nav-link">Dispatch</a>
+                    <div class="live-indicator-badge"><span class="blink-dot"></span><span class="live-text">SYNC...</span></div>
                 </div>
+                <button class="hamburger-trigger">☰</button>
             </div>
-            <button class="mobile-toggle">☰</button>
-        </div>
-    </nav>
-    <div id="mobile-overlay"><button class="mobile-close">✕</button><div class="mobile-links"><a href="index.html">HOME DASHBOARD</a><a href="services.html">FULL SERVICES</a><a href="about.html">COMPANY STORY</a><a href="contact.html">DISPATCH / CONTACT</a></div></div>
-    <section class="section-std">
-        <div class="section-head">
-            <h2>Command Center</h2>
-            <div class="copper-divider"></div>
-        </div>
-        <div class="contact-interface">
-            <div class="interface-wrapper">
-                <div class="details-side">
-                    <h3>Contact Protocols</h3>
-                    <p style="margin-bottom:30px; opacity:0.8;">Use the secure line for immediate assistance.</p>
-                    <div style="margin-bottom: 30px;">
-                        <label style="color:var(--copper-primary); font-weight:bold; letter-spacing:1px;">PRIORITY VOICE</label>
-                        <div style="font-size:1.8rem; font-weight:900; color:white; font-family:'Courier Prime', monospace;">(555) 123-4567</div>
-                        <div style="color:#aaa; font-size:0.8rem;">AVG. WAIT: 30 SECONDS</div>
+        </nav>
+        <div class="mobile-menu-overlay"><button class="close-menu-btn">✕</button><div class="mobile-link-stack"><a href="index.html" class="mobile-link">DASHBOARD</a><a href="services.html" class="mobile-link">OPERATIONS</a><a href="about.html" class="mobile-link">HISTORY</a><a href="contact.html" class="mobile-link">CONTACT</a></div></div>
+        <section class="page-intro-header">
+            <span class="section-label">COMMUNICATION LINK</span>
+            <h1 class="headline-main">Priority<br>Dispatch.</h1>
+        </section>
+        <section class="content-section">
+            <div class="form-split-layout">
+                <div class="contact-info-panel">
+                    <h3>Headquarters</h3>
+                    <p style="color:#666; margin-bottom:40px;">Data routing through central servers.</p>
+                    <div style="margin-bottom:30px;">
+                        <span class="section-label">VOICE</span>
+                        <div style="font-size:1.4rem; color:white; font-family:var(--font-mono);">(555) 123-4567</div>
                     </div>
-                    <div>
-                        <label style="color:var(--copper-primary); font-weight:bold; letter-spacing:1px;">DIGITAL INBOX</label>
-                        <div style="font-size:1.1rem;">service@ptplumbing.com</div>
+                    <div style="margin-bottom:30px;">
+                        <span class="section-label">DIGITAL</span>
+                        <div style="font-size:1.2rem; color:white;">service@ptplumbing.com</div>
+                    </div>
+                    <div style="margin-bottom:30px;">
+                        <span class="section-label">PHYSICAL NODE</span>
+                        <div style="font-size:1rem; color:#aaa;">1001 Copper Drive<br>Suite B</div>
                     </div>
                 </div>
-                <div class="form-side">
-                    <form id="contact-form" action="https://formspree.io/f/mqkvvjaz" method="POST">
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>CLIENT NAME</label>
-                                <input type="text" name="name" required placeholder="Full Name">
-                            </div>
-                            <div class="input-group">
-                                <label>CONTACT NUMBER</label>
-                                <input type="tel" name="phone" required placeholder="(555) ...">
-                            </div>
+                <div class="contact-form-panel">
+                    <form id="primary-dispatch-form" action="https://formspree.io/f/mqkvvjaz" method="POST">
+                        <div class="form-group">
+                            <label class="form-label">Client Name</label>
+                            <input type="text" name="name" class="premium-input" required placeholder="Enter ID...">
                         </div>
-                        <label>MISSION TYPE</label>
-                        <select name="type">
-                            <option>Standard Repair (Mon-Fri)</option>
-                            <option style="color:red; font-weight:bold;">⚠️ Emergency (Leak/Flood)</option>
-                            <option>New System Quote</option>
-                        </select>
-                        <label>BRIEFING / DETAILS</label>
-                        <textarea name="details" rows="4" placeholder="Describe the issue..."></textarea>
-                        <button type="submit" class="submit-btn">TRANSMIT REQUEST &rarr;</button>
-                        <div style="text-align:center; font-size:0.75rem; color:#666; margin-top:15px;">By clicking Transmit, you agree to our <a href="privacy.html" style="color:black;">Privacy Terms</a>.</div>
+                        <div class="form-group">
+                            <label class="form-label">Secure Contact Number</label>
+                            <input type="tel" name="phone" class="premium-input" required placeholder="555-...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Issue Priority</label>
+                            <select name="type" class="premium-input">
+                                <option>Level 1: Routine</option>
+                                <option>Level 2: Urgent Leak</option>
+                                <option>Level 3: Structural Fail</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Briefing</label>
+                            <textarea name="details" class="premium-input" required placeholder="Describe system status..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-solid submit-btn-lock" style="width:100%;">Transmit</button>
                     </form>
                 </div>
             </div>
-        </div>
-    </section>
-    <footer class="site-footer">
-        <div class="footer-main">
-            <div><div class="logo-lg">PT <span>PLUMBING</span></div><p>Engineering comfort since 2010.</p></div>
-        </div>
-    </footer>
+        </section>
+        <footer class="footer-global">
+            <div class="copy-row">PT PLUMBING INC - END OF LINE</div>
+        </footer>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
