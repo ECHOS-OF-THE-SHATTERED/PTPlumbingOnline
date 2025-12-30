@@ -3,154 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT Plumbing Inc. | Premier Residential Engineering</title>
-    <meta name="description" content="PT Plumbing Inc. delivers master-level residential plumbing. Specialized in leak detection, luxury water systems, and emergency pipe restoration. Licensed & Insured.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <title>PT Plumbing Inc. | Professional Residential Mechanics</title>
+    <!-- Use Standard Google Fonts only for fast reliable load -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;800&family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Meta for Security / Logo display when sharing -->
+    <meta property="og:title" content="PT Plumbing Inc.">
+    <meta property="og:image" content="assets/pt-logo-main.jpg"> 
 </head>
 <body>
-    <div id="scroll-tracker"></div>
-
     <nav class="glass-nav">
         <div class="nav-container">
-            <a href="index.html" class="brand-logo">PT <span>PLUMBING</span></a>
+            <a href="index.html" class="brand-logo">PT <span>Plumbing</span></a>
             <div class="desktop-menu">
-                <a href="index.html" class="menu-item active">Home</a>
-                <a href="services.html" class="menu-item">Services</a>
-                <a href="about.html" class="menu-item">Our Story</a>
-                <a href="contact.html" class="menu-item">Contact</a>
+                <a href="index.html" class="active">HOME</a>
+                <a href="services.html">SERVICES</a>
+                <a href="about.html">ABOUT</a>
+                <a href="contact.html">CONTACT</a>
                 <div class="status-indicator">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Techs Available</span>
+                    <span class="status-dot"></span> AVAILABLE NOW
                 </div>
             </div>
-            <button class="mobile-toggle" onclick="toggleMobileNav()">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+            <!-- Simple Mobile Hamburger -->
+            <button onclick="document.getElementById('mobile-overlay').style.display='flex'" style="background:none; border:none; font-size:2rem; cursor:pointer; display:none;" class="mobile-toggle">☰</button>
         </div>
     </nav>
-
-    <div id="mobile-overlay">
-        <div class="mobile-links">
-            <a href="index.html">Home</a>
-            <a href="services.html">Services</a>
-            <a href="about.html">Our Story</a>
-            <a href="contact.html">Contact</a>
-            <a href="tel:5551234567" class="mobile-cta">Call (555) 123-4567</a>
+    <!-- Mobile Overlay Menu (Hidden by default) -->
+    <div id="mobile-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9000; flex-direction:column; justify-content:center; align-items:center;">
+        <button onclick="document.getElementById('mobile-overlay').style.display='none'" style="position:absolute; top:20px; right:20px; font-size:2rem; background:none; border:none;">✕</button>
+        <a href="index.html" style="font-size:2rem; margin:15px; color:#111; text-decoration:none; font-weight:800;">HOME</a>
+        <a href="services.html" style="font-size:2rem; margin:15px; color:#111; text-decoration:none; font-weight:800;">SERVICES</a>
+        <a href="contact.html" style="font-size:2rem; margin:15px; color:#111; text-decoration:none; font-weight:800;">CONTACT</a>
+    </div>
+    <!-- MAIN HEADER: Split Layout -->
+    <header class="hero-split">
+        <div class="hero-text">
+            <div class="pre-header">// SYSTEM ACTIVE // EST. 2010</div>
+            <h1 class="reveal-on-scroll">Old School Values. <br>Modern Science.</h1>
+            <p class="reveal-on-scroll">We are the antidote to the "fast and cheap" plumber. We engineer residential water systems that last for decades.</p>
+            <div class="trust-badges reveal-on-scroll">
+                <span>★ Licensed Master Plumbers</span>
+                <span>★ Bonded & Insured</span>
+            </div>
+        </div>
+        <div class="hero-interface">
+            <!-- Triage Card: The "Video Game UI" element -->
+            <div class="triage-card reveal-on-scroll">
+                <div class="triage-header">
+                    <h3>SELECT SERVICE</h3>
+                </div>
+                <div class="triage-grid">
+                    <a href="contact.html" class="triage-btn urgent">
+                        <span>⚠️ EMERGENCY</span>
+                        <small>LEAK / FLOOD</small>
+                    </a>
+                    <a href="services.html" class="triage-btn">
+                        <span>🚿 NO HOT WATER</span>
+                    </a>
+                    <a href="services.html" class="triage-btn">
+                        <span>🚽 DRAINAGE</span>
+                    </a>
+                    <a href="contact.html" class="triage-btn">
+                        <span>📅 SCHEDULE</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span class="ticker-item">NO HIDDEN FEES</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">SHOE COVERS REQUIRED</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">100% CLEAN GUARANTEE</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">CALL US: (555) 123-4567</span>
         </div>
     </div>
-
-    <main>
-        <section class="hero-split">
-            <div class="hero-text reveal-on-scroll">
-                <div class="pre-header">ESTABLISHED 2010</div>
-                <h1>The Integrity of Your Home.</h1>
-                <p>We combine old-world craftsmanship with modern diagnostic technology. No guesswork. Just perfect plumbing.</p>
-                <div class="trust-badges">
-                    <span>★ 5-Star Rated</span>
-                    <span>🛡️ 10-Year Warranty</span>
-                    <span>✓ Licensed</span>
-                </div>
-            </div>
-            <div class="hero-interface">
-                <div class="triage-card">
-                    <div class="triage-header">
-                        <h3>Dispatch Center</h3>
-                    </div>
-                    <div class="triage-grid">
-                        <a href="contact.html?type=emergency" class="triage-btn urgent">
-                            <span class="t-label">⚡ Emergency</span>
-                            <span class="t-sub">Leak / Flood</span>
-                        </a>
-                        <a href="services.html" class="triage-btn">
-                            <span class="t-label">No Hot Water</span>
-                        </a>
-                        <a href="services.html" class="triage-btn">
-                            <span class="t-label">Slow Drain</span>
-                        </a>
-                        <a href="contact.html" class="triage-btn">
-                            <span class="t-label">Maintenance</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="ticker-wrap">
-            <div class="ticker">
-                <div class="ticker-item">UPFRONT PRICING GUARANTEE</div>
-                <div class="ticker-item">•</div>
-                <div class="ticker-item">SHOE COVERS WORN AT ALL TIMES</div>
-                <div class="ticker-item">•</div>
-                <div class="ticker-item">FULLY STOCKED WAREHOUSE ON WHEELS</div>
-                <div class="ticker-item">•</div>
-            </div>
+    <section class="section-std">
+        <div class="section-head reveal-on-scroll">
+            <h2>The Diagnostic Deck</h2>
+            <div class="copper-divider"></div>
         </div>
-
-        <section class="problem-solver">
-            <div class="section-head reveal-on-scroll">
-                <h2>Identify Your Issue</h2>
-                <div class="copper-divider"></div>
-            </div>
-            <div class="solver-grid">
-                <article class="solver-card reveal-on-scroll">
-                    <div class="card-visual visual-leak"></div>
-                    <div class="card-content">
-                        <h3>Hidden Leaks</h3>
-                        <p>High water bill? We use thermal imaging to find leaks behind walls without destruction.</p>
-                        <a href="services.html" class="learn-link">View Tech →</a>
-                    </div>
-                </article>
-                <article class="solver-card reveal-on-scroll delay-1">
-                    <div class="card-visual visual-heat"></div>
-                    <div class="card-content">
-                        <h3>Water Heating</h3>
-                        <p>From tankless conversions to rapid repairs. Ensure your shower is never cold again.</p>
-                        <a href="services.html" class="learn-link">View Heaters →</a>
-                    </div>
-                </article>
-                <article class="solver-card reveal-on-scroll delay-2">
-                    <div class="card-visual visual-pipe"></div>
-                    <div class="card-content">
-                        <h3>Pipe Health</h3>
-                        <p>Old pipes rust from the inside. We specialize in copper and PEX repiping.</p>
-                        <a href="services.html" class="learn-link">View Repiping →</a>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section class="interactive-insight reveal-on-scroll">
-            <div class="insight-container">
-                <div class="insight-left">
-                    <h4>Did you know?</h4>
-                    <h3 id="fact-display">Water pressure above 80 PSI can void your appliance warranties.</h3>
-                    <button class="refresh-fact-btn" onclick="refreshFact()">Load New Insight</button>
+        <div class="solver-grid">
+            <article class="solver-card reveal-on-scroll">
+                <div class="card-visual" style="background-image: url('https://images.unsplash.com/photo-1521207418485-99c705420785?auto=format&fit=crop&q=80');"></div>
+                <div class="card-content">
+                    <h3>Pipe Integrity</h3>
+                    <p>Detecting invisible pinhole leaks in copper piping using advanced acoustic and thermal sensors. We fix the leak without destroying your wall.</p>
+                    <a href="services.html" class="learn-link">DIAGNOSTICS &rarr;</a>
                 </div>
-            </div>
-        </section>
-    </main>
-
+            </article>
+            <article class="solver-card reveal-on-scroll">
+                <div class="card-visual" style="background-image: url('https://images.unsplash.com/photo-1585704032915-c3400ca1f963?auto=format&fit=crop&q=80');"></div>
+                <div class="card-content">
+                    <h3>Thermodynamics</h3>
+                    <p>Installation and maintenance of Tankless Water Heaters. Endless hot water systems engineered for high efficiency.</p>
+                    <a href="services.html" class="learn-link">WATER SYSTEMS &rarr;</a>
+                </div>
+            </article>
+            <article class="solver-card reveal-on-scroll">
+                <div class="card-visual" style="background-image: url('https://images.unsplash.com/photo-1542013936693-884638332954?auto=format&fit=crop&q=80');"></div>
+                <div class="card-content">
+                    <h3>Flow Management</h3>
+                    <p>Complete drain restoration. We do not just poke a hole in the clog; we scour the pipe walls to original condition.</p>
+                    <a href="services.html" class="learn-link">DRAINAGE &rarr;</a>
+                </div>
+            </article>
+        </div>
+    </section>
+    <!-- Interactive Mechanical Tip Box -->
+    <div class="interactive-insight reveal-on-scroll">
+        <h4>[ SYSTEM TIP GENERATOR ]</h4>
+        <div id="fact-display">High water pressure destroys washing machine valves.</div>
+        <button class="refresh-fact-btn" onclick="rotateFact()">LOAD NEW DATA</button>
+    </div>
     <footer class="site-footer">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="logo-large">PT <span>PLUMBING</span></div>
-                <p>Engineering comfort and safety for the modern home.</p>
+        <div class="footer-main">
+            <div>
+                <div class="logo-lg">PT <span>PLUMBING</span></div>
+                <p>Licensed & Bonded.<br>Engineering comfort since 2010.</p>
             </div>
-            <div class="footer-contact">
-                <a href="tel:5551234567" class="phone-large">(555) 123-4567</a>
+            <div style="text-align: right;">
+                <p style="color:white; font-size:1.5rem; font-weight:bold;">(555) 123-4567</p>
+                <p>service@ptplumbing.com</p>
+                <p style="margin-top:20px; font-size:0.7rem; opacity:0.5;">
+                    Security: Dye Security | Architect: Voidborn
+                </p>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="copyright">© 2025 PT Plumbing Inc. All Rights Reserved.</div>
         </div>
     </footer>
-
-    <a href="tel:5551234567" class="mobile-sticky-bar">TAP TO CALL NOW</a>
+    <a href="tel:5551234567" class="mobile-bar">TAP TO CALL PRIORITY LINE</a>
     <script src="script.js"></script>
+    <script>
+        if(window.innerWidth < 900) { document.querySelector('.mobile-toggle').style.display = 'block'; }
+    </script>
 </body>
 </html>
