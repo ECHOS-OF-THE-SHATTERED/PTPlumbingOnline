@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dispatch | PT Plumbing</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <title>Contact & Dispatch | PT Plumbing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="fade-in">
     <nav class="glass-nav">
         <div class="nav-container">
             <a href="index.html" class="brand-logo">PT <span>Plumbing</span></a>
@@ -15,50 +15,67 @@
                 <a href="index.html">HOME</a>
                 <a href="services.html">SERVICES</a>
                 <a href="about.html">ABOUT</a>
-                <a href="contact.html" class="active">CONTACT</a>
+                <a href="contact.html">CONTACT</a>
+                <div class="status-indicator">
+                    <span class="status-dot"></span> <span class="status-text-dynamic">STATUS</span>
+                </div>
             </div>
+            <button class="mobile-toggle">☰</button>
         </div>
     </nav>
+    <div id="mobile-overlay"><button class="mobile-close">✕</button><div class="mobile-links"><a href="index.html">HOME DASHBOARD</a><a href="services.html">FULL SERVICES</a><a href="about.html">COMPANY STORY</a><a href="contact.html">DISPATCH / CONTACT</a></div></div>
     <section class="section-std">
         <div class="section-head">
-            <h2>Direct Line Connection</h2>
+            <h2>Command Center</h2>
             <div class="copper-divider"></div>
         </div>
         <div class="contact-interface">
             <div class="interface-wrapper">
                 <div class="details-side">
-                    <h3>Headquarters</h3>
-                    <p style="margin-bottom:30px;">Direct scheduling with no middle man.</p>
-                    <div style="margin-bottom: 20px;">
-                        <label style="color:var(--copper-primary); font-weight:bold;">PRIORITY VOICE</label>
-                        <div style="font-size:1.5rem; font-weight:bold;">(555) 123-4567</div>
+                    <h3>Contact Protocols</h3>
+                    <p style="margin-bottom:30px; opacity:0.8;">Use the secure line for immediate assistance.</p>
+                    <div style="margin-bottom: 30px;">
+                        <label style="color:var(--copper-primary); font-weight:bold; letter-spacing:1px;">PRIORITY VOICE</label>
+                        <div style="font-size:1.8rem; font-weight:900; color:white; font-family:'Courier Prime', monospace;">(555) 123-4567</div>
+                        <div style="color:#aaa; font-size:0.8rem;">AVG. WAIT: 30 SECONDS</div>
                     </div>
                     <div>
-                        <label style="color:var(--copper-primary); font-weight:bold;">DIGITAL MAIL</label>
+                        <label style="color:var(--copper-primary); font-weight:bold; letter-spacing:1px;">DIGITAL INBOX</label>
                         <div style="font-size:1.1rem;">service@ptplumbing.com</div>
                     </div>
                 </div>
                 <div class="form-side">
-                    <form id="dispatchForm" action="https://formspree.io/f/mqkvvjaz" method="POST">
-                        <label>CLIENT NAME</label>
-                        <input type="text" name="name" required placeholder="Jane Doe">
-                        <label>CONTACT NUMBER</label>
-                        <input type="tel" name="phone" required placeholder="(555) 000-0000">
+                    <form id="contact-form" action="https://formspree.io/f/mqkvvjaz" method="POST">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>CLIENT NAME</label>
+                                <input type="text" name="name" required placeholder="Full Name">
+                            </div>
+                            <div class="input-group">
+                                <label>CONTACT NUMBER</label>
+                                <input type="tel" name="phone" required placeholder="(555) ...">
+                            </div>
+                        </div>
                         <label>MISSION TYPE</label>
                         <select name="type">
-                            <option>General Service</option>
-                            <option>Emergency Leak</option>
-                            <option>System Install</option>
+                            <option>Standard Repair (Mon-Fri)</option>
+                            <option style="color:red; font-weight:bold;">⚠️ Emergency (Leak/Flood)</option>
+                            <option>New System Quote</option>
                         </select>
-                        <label>MISSION BRIEF (DETAILS)</label>
-                        <textarea name="details" rows="4"></textarea>
-                        <button type="submit" class="submit-btn">TRANSMIT REQUEST</button>
+                        <label>BRIEFING / DETAILS</label>
+                        <textarea name="details" rows="4" placeholder="Describe the issue..."></textarea>
+                        <button type="submit" class="submit-btn">TRANSMIT REQUEST &rarr;</button>
+                        <div style="text-align:center; font-size:0.75rem; color:#666; margin-top:15px;">By clicking Transmit, you agree to our <a href="privacy.html" style="color:black;">Privacy Terms</a>.</div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
-    <a href="tel:5551234567" class="mobile-bar">TAP TO CALL</a>
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div><div class="logo-lg">PT <span>PLUMBING</span></div><p>Engineering comfort since 2010.</p></div>
+        </div>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
