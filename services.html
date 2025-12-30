@@ -3,92 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services | PT Plumbing Inc.</title>
+    <title>Operations | PT Plumbing</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="fade-in">
-    <!-- NAV -->
-    <nav class="glass-nav">
-        <div class="nav-container">
-            <a href="index.html" class="brand-logo">PT <span>Plumbing</span></a>
-            <div class="desktop-menu">
-                <a href="index.html">HOME</a>
-                <a href="services.html">SERVICES</a>
-                <a href="about.html">ABOUT</a>
-                <a href="contact.html">CONTACT</a>
-                <div class="status-indicator">
-                    <span class="status-dot"></span> <span class="status-text-dynamic">STATUS</span>
+<body>
+    <div class="app-wrapper">
+        <nav class="main-navigation">
+            <div class="nav-content">
+                <a href="index.html" class="brand-block">
+                    <div class="brand-title">PT <span>Plumbing</span></div>
+                </a>
+                <div class="nav-links-desktop">
+                    <a href="index.html" class="nav-link">Control</a>
+                    <a href="services.html" class="nav-link">Operations</a>
+                    <a href="about.html" class="nav-link">Logistics</a>
+                    <a href="contact.html" class="nav-link">Dispatch</a>
+                    <div class="live-indicator-badge"><span class="blink-dot"></span><span class="live-text">SYNC...</span></div>
                 </div>
+                <button class="hamburger-trigger">☰</button>
             </div>
-            <button class="mobile-toggle">☰</button>
-        </div>
-    </nav>
-    <div id="mobile-overlay"><button class="mobile-close">✕</button><div class="mobile-links"><a href="index.html">HOME DASHBOARD</a><a href="services.html">FULL SERVICES</a><a href="about.html">COMPANY STORY</a><a href="contact.html">DISPATCH / CONTACT</a></div></div>
-    <!-- SERVICES HEADER -->
-    <section class="page-header">
-        <div class="container-bound">
-            <h1>Service Menu</h1>
-            <p>Our flat-rate pricing guide. No surprises.</p>
-        </div>
-    </section>
-    <!-- DETAILED LIST -->
-    <section class="section-std">
-        <div class="service-row reveal-on-scroll">
-            <div class="service-text">
-                <h2>01. Leak Detection & Repair</h2>
-                <div class="copper-divider-left"></div>
-                <p>Water leaks account for 40% of home insurance claims. We use acoustic listening devices to find leaks behind walls without cutting unnecessarily.</p>
-                <ul class="check-list">
-                    <li>✓ Slab Leak Repair</li>
-                    <li>✓ Copper Pipe Re-Routes</li>
-                    <li>✓ Ceiling Spot Diagnosis</li>
-                </ul>
-                <a href="contact.html" class="btn-secondary">Request Inspection</a>
+        </nav>
+        <div class="mobile-menu-overlay"><button class="close-menu-btn">✕</button><div class="mobile-link-stack"><a href="index.html" class="mobile-link">DASHBOARD</a><a href="services.html" class="mobile-link">OPERATIONS</a><a href="about.html" class="mobile-link">HISTORY</a><a href="contact.html" class="mobile-link">CONTACT</a></div></div>
+        <section class="page-intro-header">
+            <span class="section-label">SERVICE CATALOG V2.0</span>
+            <h1 class="headline-main">Technical<br>Solutions.</h1>
+            <p class="headline-sub">Full breakdown of residential hydraulic capabilities and base-line pricing protocols.</p>
+        </section>
+        <section class="content-section">
+            <div class="service-row-layout">
+                <div class="service-info-col">
+                    <span class="pricing-badge">DIAGNOSTIC START: $89.00</span>
+                    <h2>Acoustic Leak Isolation</h2>
+                    <p style="margin-top:20px; color:#aaa;">Using ultrasonics, we locate slab leaks without demolition. Why destroy the whole floor when we can target the exact inch of failure?</p>
+                    <div class="spec-list">
+                        <div class="spec-item">Time to Detect: <span>Avg 60 min</span></div>
+                        <div class="spec-item">Equipment: <span>Goldak Sound Sensors</span></div>
+                        <div class="spec-item">Intrusion Level: <span>Zero</span></div>
+                    </div>
+                    <a href="contact.html" class="btn-outline" style="margin-top:30px;">Deploy Sensor</a>
+                </div>
+                <div class="service-img-col" style="background-image:url('assets/pt-logo-text.png'); background-size:contain; background-repeat:no-repeat;"></div>
             </div>
-            <div class="service-image" style="background-image: url('assets/pt-logo-main.jpg'); opacity: 0.8;"></div>
-        </div>
-        <div class="service-row reverse reveal-on-scroll">
-            <div class="service-text">
-                <h2>02. Water Heaters (Standard & Tankless)</h2>
-                <div class="copper-divider-left"></div>
-                <p>We are certified installers for Navien and Rinnai. Whether you need a standard 50-gallon tank or a high-efficiency tankless system, we ensure gas lines are sized correctly.</p>
-                <ul class="check-list">
-                    <li>✓ Annual Flushes</li>
-                    <li>✓ Anode Rod Replacement</li>
-                    <li>✓ Error Code Diagnosis</li>
-                </ul>
-                <a href="contact.html" class="btn-secondary">Get A Quote</a>
+            <div class="service-row-layout" style="flex-direction: row-reverse;">
+                <div class="service-info-col">
+                    <span class="pricing-badge">INSTALLS: FROM $1,200</span>
+                    <h2>Thermodynamic Exchange</h2>
+                    <p style="margin-top:20px; color:#aaa;">Tankless or standard. We calculate gas load demands to ensure your new unit fires at 100% capacity without error codes.</p>
+                    <div class="spec-list">
+                        <div class="spec-item">Warranty: <span>6 to 12 Years</span></div>
+                        <div class="spec-item">Brands: <span>Bradford White / Navien</span></div>
+                        <div class="spec-item">Permits: <span>Pulled & Filed</span></div>
+                    </div>
+                    <a href="contact.html" class="btn-outline" style="margin-top:30px;">Config Unit</a>
+                </div>
+                <div class="service-img-col" style="background-image:url('assets/pt-logo-main.jpg'); opacity:0.6;"></div>
             </div>
-            <div class="service-image" style="background-color: #222;">
-                 <!-- Placeholder for future heater image, currently dark aesthetic -->
-                 <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555;">[THERMODYNAMICS UNIT]</div>
-            </div>
-        </div>
-        <div class="service-row reveal-on-scroll">
-            <div class="service-text">
-                <h2>03. Drain Cleaning & Hydrojetting</h2>
-                <div class="copper-divider-left"></div>
-                <p>Slow drains are the symptom; the blockage is the disease. We use camera inspection to locate roots or grease, then HydroJet them away.</p>
-                <ul class="check-list">
-                    <li>✓ Camera Inspection Included</li>
-                    <li>✓ 2-Year Warranty on Repairs</li>
-                    <li>✓ Root Intrusion Removal</li>
-                </ul>
-                <a href="contact.html" class="btn-secondary">Clear Drains</a>
-            </div>
-            <div class="service-image" style="background-color: #222;">
-                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555;">[FLOW CONTROL UNIT]</div>
-            </div>
-        </div>
-    </section>
-    <!-- FOOTER -->
-    <footer class="site-footer">
-        <div class="footer-main">
-            <div><div class="logo-lg">PT <span>PLUMBING</span></div><p>Engineering comfort since 2010.</p></div>
-            <div style="text-align: right;"><p class="footer-phone">(555) 123-4567</p><p>service@ptplumbing.com</p></div>
-        </div>
-    </footer>
+        </section>
+        <footer class="footer-global">
+            <div class="copy-row">PT PLUMBING INC - OPERATIONS</div>
+        </footer>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
