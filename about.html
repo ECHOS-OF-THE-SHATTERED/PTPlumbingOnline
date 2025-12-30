@@ -3,70 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story | PT Plumbing Inc.</title>
+    <title>Logistics & History | PT Plumbing</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="fade-in">
-    <nav class="glass-nav">
-        <div class="nav-container">
-            <a href="index.html" class="brand-logo">PT <span>Plumbing</span></a>
-            <div class="desktop-menu">
-                <a href="index.html">HOME</a>
-                <a href="services.html">SERVICES</a>
-                <a href="about.html">ABOUT</a>
-                <a href="contact.html">CONTACT</a>
-                <div class="status-indicator">
-                    <span class="status-dot"></span> <span class="status-text-dynamic">STATUS</span>
+<body>
+    <div class="app-wrapper">
+        <nav class="main-navigation">
+            <div class="nav-content">
+                <a href="index.html" class="brand-block">
+                    <div class="brand-title">PT <span>Plumbing</span></div>
+                </a>
+                <div class="nav-links-desktop">
+                    <a href="index.html" class="nav-link">Control</a>
+                    <a href="services.html" class="nav-link">Operations</a>
+                    <a href="about.html" class="nav-link">Logistics</a>
+                    <a href="contact.html" class="nav-link">Dispatch</a>
+                    <div class="live-indicator-badge"><span class="blink-dot"></span><span class="live-text">SYNC...</span></div>
+                </div>
+                <button class="hamburger-trigger">☰</button>
+            </div>
+        </nav>
+        <div class="mobile-menu-overlay"><button class="close-menu-btn">✕</button><div class="mobile-link-stack"><a href="index.html" class="mobile-link">DASHBOARD</a><a href="services.html" class="mobile-link">OPERATIONS</a><a href="about.html" class="mobile-link">HISTORY</a><a href="contact.html" class="mobile-link">CONTACT</a></div></div>
+        <section class="page-intro-header">
+            <span class="section-label">DATA LOG 15-B</span>
+            <h1 class="headline-main">Origin<br>Story.</h1>
+        </section>
+        <section class="content-section">
+            <div class="form-split-layout" style="border:none; background:transparent;">
+                <div style="padding-right:50px;">
+                    <h2>Not A Franchise.</h2>
+                    <p style="color:#aaa; margin-top:20px; font-size:1.1rem;">We built this system to oppose the private equity takeover of trades. We are not sales people in uniforms.</p>
+                    <p style="color:#aaa; margin-top:20px;">We are licensed mechanics. We adhere to code 100% of the time. We sleep well knowing your gas lines are sealed.</p>
+                </div>
+                <div>
+                    <div class="timeline-container">
+                        <div class="timeline-node">
+                            <div class="year-marker">2010</div>
+                            <p>Primary unit activated. Single van operation.</p>
+                        </div>
+                        <div class="timeline-node">
+                            <div class="year-marker">2015</div>
+                            <p>Expansion to commercial division. Acquired Master License.</p>
+                        </div>
+                        <div class="timeline-node">
+                            <div class="year-marker">2025</div>
+                            <p>Fully digitized operations with Voidborn Arch. Fleet of 12 units.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button class="mobile-toggle">☰</button>
-        </div>
-    </nav>
-    <div id="mobile-overlay"><button class="mobile-close">✕</button><div class="mobile-links"><a href="index.html">HOME DASHBOARD</a><a href="services.html">FULL SERVICES</a><a href="about.html">COMPANY STORY</a><a href="contact.html">DISPATCH / CONTACT</a></div></div>
-    <section class="page-header">
-        <div class="container-bound">
-            <h1>The Operator Story</h1>
-            <p>From one van to a fleet. Built on reputation.</p>
-        </div>
-    </section>
-    <section class="section-std">
-        <div class="bio-container reveal-on-scroll">
-            <div class="bio-text">
-                <h3>Not a Franchise. A Family.</h3>
-                <p>In 2010, we started with a simple mission: Pick up the phone. Show up on time. Fix it right.</p>
-                <p>The modern plumbing industry has been taken over by private equity firms and call centers. They send sales-people, not mechanics. PT Plumbing remains independently owned. When you call us, you are speaking to someone who knows the trade.</p>
-                <br>
-                <h3>The Technician Guarantee</h3>
-                <p>Every technician in a PT Uniform undergoes:</p>
-                <ul>
-                    <li>10-Point Drug & Background Screen</li>
-                    <li>Continuous Technical Training</li>
-                    <li>OSHA Safety Certification</li>
-                </ul>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-num">15+</div>
-                    <div class="stat-label">Years Active</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-num">5k+</div>
-                    <div class="stat-label">Jobs Done</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-num">100%</div>
-                    <div class="stat-label">Satisfaction</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <footer class="site-footer">
-        <div class="footer-main">
-            <div><div class="logo-lg">PT <span>PLUMBING</span></div><p>Engineering comfort since 2010.</p></div>
-            <div style="text-align: right;"><p class="footer-phone">(555) 123-4567</p></div>
-        </div>
-    </footer>
+        </section>
+        <footer class="footer-global">
+            <div class="copy-row">PT PLUMBING INC - LOGISTICS</div>
+        </footer>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
