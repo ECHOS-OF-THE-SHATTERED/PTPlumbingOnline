@@ -3,105 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services | PT Plumbing Inc.</title>
-    <meta name="description" content="Explore our premium plumbing services. From emergency leak detection to luxury water heater installations, we handle residential engineering with precision.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <title>Services | PT Plumbing Inc.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="scroll-tracker"></div>
-
+<body class="fade-in">
+    <!-- NAV -->
     <nav class="glass-nav">
         <div class="nav-container">
-            <a href="index.html" class="brand-logo">PT <span>PLUMBING</span></a>
+            <a href="index.html" class="brand-logo">PT <span>Plumbing</span></a>
             <div class="desktop-menu">
-                <a href="index.html" class="menu-item">Home</a>
-                <a href="services.html" class="menu-item active">Services</a>
-                <a href="about.html" class="menu-item">Our Story</a>
-                <a href="contact.html" class="menu-item">Contact</a>
+                <a href="index.html">HOME</a>
+                <a href="services.html">SERVICES</a>
+                <a href="about.html">ABOUT</a>
+                <a href="contact.html">CONTACT</a>
                 <div class="status-indicator">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Techs Available</span>
+                    <span class="status-dot"></span> <span class="status-text-dynamic">STATUS</span>
                 </div>
             </div>
-            <button class="mobile-toggle" onclick="toggleMobileNav()">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+            <button class="mobile-toggle">☰</button>
         </div>
     </nav>
-
-    <div id="mobile-overlay">
-        <div class="mobile-links">
-            <a href="index.html">Home</a>
-            <a href="services.html">Services</a>
-            <a href="about.html">Our Story</a>
-            <a href="contact.html">Contact</a>
-            <a href="tel:5551234567" class="mobile-cta">Call (555) 123-4567</a>
+    <div id="mobile-overlay"><button class="mobile-close">✕</button><div class="mobile-links"><a href="index.html">HOME DASHBOARD</a><a href="services.html">FULL SERVICES</a><a href="about.html">COMPANY STORY</a><a href="contact.html">DISPATCH / CONTACT</a></div></div>
+    <!-- SERVICES HEADER -->
+    <section class="page-header">
+        <div class="container-bound">
+            <h1>Service Menu</h1>
+            <p>Our flat-rate pricing guide. No surprises.</p>
         </div>
-    </div>
-
-    <main>
-        <header class="page-hero hero-services">
-            <div class="hero-overlay-dark">
-                <h1>Engineered Solutions</h1>
+    </section>
+    <!-- DETAILED LIST -->
+    <section class="section-std">
+        <div class="service-row reveal-on-scroll">
+            <div class="service-text">
+                <h2>01. Leak Detection & Repair</h2>
+                <div class="copper-divider-left"></div>
+                <p>Water leaks account for 40% of home insurance claims. We use acoustic listening devices to find leaks behind walls without cutting unnecessarily.</p>
+                <ul class="check-list">
+                    <li>✓ Slab Leak Repair</li>
+                    <li>✓ Copper Pipe Re-Routes</li>
+                    <li>✓ Ceiling Spot Diagnosis</li>
+                </ul>
+                <a href="contact.html" class="btn-secondary">Request Inspection</a>
             </div>
-        </header>
-
-        <section class="story-split">
-            <div class="split-container">
-                <div class="split-content reveal-on-scroll">
-                    <h2>Emergency Diagnostics</h2>
-                    <p>When water appears where it should not, time is critical. Our "Rapid Deployment" protocol ensures a master technician arrives with a fully stocked warehouse-on-wheels.</p>
-                    <ul class="feature-list">
-                        <li>Non-Invasive Leak Detection</li>
-                        <li>Burst Pipe Isolation</li>
-                        <li>Sewer Backup Clearance</li>
-                    </ul>
-                    <a href="contact.html?type=emergency" class="text-link">Request Emergency Dispatch →</a>
-                </div>
-                <div class="split-visual reveal-on-scroll delay-1">
-                     <div class="visual-bg" style="background-image: url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80');"></div>
-                </div>
+            <div class="service-image" style="background-image: url('assets/pt-logo-main.jpg'); opacity: 0.8;"></div>
+        </div>
+        <div class="service-row reverse reveal-on-scroll">
+            <div class="service-text">
+                <h2>02. Water Heaters (Standard & Tankless)</h2>
+                <div class="copper-divider-left"></div>
+                <p>We are certified installers for Navien and Rinnai. Whether you need a standard 50-gallon tank or a high-efficiency tankless system, we ensure gas lines are sized correctly.</p>
+                <ul class="check-list">
+                    <li>✓ Annual Flushes</li>
+                    <li>✓ Anode Rod Replacement</li>
+                    <li>✓ Error Code Diagnosis</li>
+                </ul>
+                <a href="contact.html" class="btn-secondary">Get A Quote</a>
             </div>
-        </section>
-
-        <section class="story-split gray-bg">
-            <div class="split-container reverse">
-                <div class="split-content reveal-on-scroll">
-                    <h2>Advanced Water Systems</h2>
-                    <p>Cold showers are a thing of the past. We specialize in high-efficiency tankless retrofits that provide endless hot water while reducing gas consumption by up to 30%.</p>
-                    <ul class="feature-list">
-                        <li>Tankless Water Heaters</li>
-                        <li>Whole-Home Filtration</li>
-                        <li>Water Softener Installation</li>
-                    </ul>
-                    <a href="contact.html" class="text-link">Upgrade Your Water Heater →</a>
-                </div>
-                <div class="split-visual reveal-on-scroll delay-1">
-                    <div class="visual-bg" style="background-image: url('https://images.unsplash.com/photo-1585704032915-c3400ca1f963?auto=format&fit=crop&q=80');"></div>
-                </div>
+            <div class="service-image" style="background-color: #222;">
+                 <!-- Placeholder for future heater image, currently dark aesthetic -->
+                 <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555;">[THERMODYNAMICS UNIT]</div>
             </div>
-        </section>
-    </main>
-
+        </div>
+        <div class="service-row reveal-on-scroll">
+            <div class="service-text">
+                <h2>03. Drain Cleaning & Hydrojetting</h2>
+                <div class="copper-divider-left"></div>
+                <p>Slow drains are the symptom; the blockage is the disease. We use camera inspection to locate roots or grease, then HydroJet them away.</p>
+                <ul class="check-list">
+                    <li>✓ Camera Inspection Included</li>
+                    <li>✓ 2-Year Warranty on Repairs</li>
+                    <li>✓ Root Intrusion Removal</li>
+                </ul>
+                <a href="contact.html" class="btn-secondary">Clear Drains</a>
+            </div>
+            <div class="service-image" style="background-color: #222;">
+                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555;">[FLOW CONTROL UNIT]</div>
+            </div>
+        </div>
+    </section>
+    <!-- FOOTER -->
     <footer class="site-footer">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="logo-large">PT <span>PLUMBING</span></div>
-                <p>Engineering comfort and safety for the modern home.</p>
-            </div>
-            <div class="footer-contact">
-                <a href="tel:5551234567" class="phone-large">(555) 123-4567</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="copyright">© 2025 PT Plumbing Inc. All Rights Reserved.</div>
+        <div class="footer-main">
+            <div><div class="logo-lg">PT <span>PLUMBING</span></div><p>Engineering comfort since 2010.</p></div>
+            <div style="text-align: right;"><p class="footer-phone">(555) 123-4567</p><p>service@ptplumbing.com</p></div>
         </div>
     </footer>
-
-    <a href="tel:5551234567" class="mobile-sticky-bar">TAP TO CALL NOW</a>
     <script src="script.js"></script>
 </body>
 </html>
