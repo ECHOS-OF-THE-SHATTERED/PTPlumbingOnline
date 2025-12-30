@@ -1,648 +1,834 @@
-const VOIDBORN_ARCH_CONFIG = {
-  system: {
-    version: "2.5.0",
-    id: "PT-PLUMB-NODE-ALPHA",
-    debugMode: false,
-    refreshRate: 60
-  },
-  time: {
-    targetTimezone: "America/New_York",
-    openingHour: 7,
-    closingHour: 19,
-    openDays: [
-      1,
-      2,
-      3,
-      4,
-      5
-    ]
-  },
-  theme: {
-    primaryColor: "#B87333",
-    secondaryColor: "#0a0a0a",
-    alertColor: "#ff3b3b",
-    successColor: "#00ff66",
-    fontPrimary: "Playfair Display",
-    fontMono: "Courier Prime"
-  },
-  physics: {
-    particleCount: 65,
-    connectionDistance: 150,
-    baseVelocity: 0.5,
-    canvasId: "hero-particle-system"
-  },
-  selectors: {
-    navWrapper: ".main-navigation-wrapper",
-    navItems: ".nav-link-item",
-    mobileOverlay: ".mobile-menu-overlay",
-    hamburgerBtn: ".hamburger-btn-control",
-    closeMenuBtn: ".close-menu-btn",
-    scrollElements: ".service-card, .timeline-node, .hero-text-content, .hero-visual-module",
-    statusBadge: ".status-indicator-light",
-    statusText: ".status-text",
-    securityBadge: ".security-credit-badge",
-    dynamicTicker: ".ticker-content-track"
-  }
+"use strict";
+const SYSTEM_CONFIG = {
+    animation: {
+        revealThreshold: 0.15,
+        counterSpeed: 2000,
+        scrollSmoothness: 0.08,
+        parallaxIntensity: 0.3
+    },
+    ui: {
+        menuStickyPoint: 100,
+        mobileBreakpoint: 1024,
+        loaderDuration: 1800,
+        typingSpeed: 30
+    },
+    routes: {
+        home: "index",
+        services: "services",
+        about: "about",
+        contact: "contact"
+    }
 };
-class VoidUtils {
-  static getTimestamp() {
-    return new Date().toISOString();
-  }
-  static formatPhoneNumber(raw) {
-    const cleaned = raw.replace(/\D/g, "");
-    if (cleaned.length < 4) {
-      return cleaned;
+class StateManager {
+    constructor() {
+        this.state = {
+            menuOpen: false,
+            scrolled: false,
+            loading: true,
+            page: document.body.dataset.currentPage || "unknown",
+            formSubmitting: false,
+            heroVisible: true
+        };
+        this.observers = [];
     }
-    if (cleaned.length < 7) {
-      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
-    }
-    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
-  }
-  static debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-  static clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
-  static generateUUID() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0;
-      const v = c === "x" ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-}
-class DOMHandler {
-  constructor() {
-    this.cache = new Map();
-  }
-  static get instance() {
-    if (!DOMHandler._instance) {
-      DOMHandler._instance = new DOMHandler();
-    }
-    return DOMHandler._instance;
-  }
-  getElement(selector) {
-    if (this.cache.has(selector)) {
-      return this.cache.get(selector);
-    }
-    const element = document.querySelector(selector);
-    if (element) {
-      this.cache.set(selector, element);
-    }
-    return element;
-  }
-  getAllElements(selector) {
-    return document.querySelectorAll(selector);
-  }
-  addClass(selector, className) {
-    const el = this.getElement(selector);
-    if (el) {
-      el.classList.add(className);
-    }
-  }
-  removeClass(selector, className) {
-    const el = this.getElement(selector);
-    if (el) {
-      el.classList.remove(className);
-    }
-  }
-  toggleBodyScroll(shouldLock) {
-    if (shouldLock) {
-      document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = "15px";
-    } else {
-      document.body.style.overflow = "visible";
-      document.body.style.paddingRight = "0";
-    }
-  }
-  setHTML(selector, html) {
-    const el = this.getElement(selector);
-    if (el) {
-      el.innerHTML = html;
-    }
-  }
-  setText(selector, text) {
-    const el = this.getElement(selector);
-    if (el) {
-      el.textContent = text;
-    }
-  }
-  setAttribute(selector, attr, value) {
-    const el = this.getElement(selector);
-    if (el) {
-      el.setAttribute(attr, value);
-    }
-  }
-}
-class TimeManager {
-  constructor() {
-    this.dom = DOMHandler.instance;
-    this.timer = null;
-    this.config = VOIDBORN_ARCH_CONFIG.time;
-  }
-  initializeClockCycle() {
-    this.assessBusinessStatus();
-    this.timer = setInterval(() => {
-      this.assessBusinessStatus();
-    }, 60000);
-  }
-  assessBusinessStatus() {
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentDay = now.getDay();
-    const isWeekday = this.config.openDays.includes(currentDay);
-    const isWorkHours = currentHour >= this.config.openingHour && currentHour < this.config.closingHour;
-    const isOperational = isWeekday && isWorkHours;
-    this.updateStatusIndicators(isOperational);
-  }
-  updateStatusIndicators(isOperational) {
-    const statusText = isOperational ? "DISPATCH: ONLINE" : "EMERGENCY OPS ONLY";
-    const statusColor = isOperational ? VOIDBORN_ARCH_CONFIG.theme.successColor : VOIDBORN_ARCH_CONFIG.theme.alertColor;
-    const indicatorClass = isOperational ? "active" : "offline";
-    const indicatorEl = this.dom.getElement(VOIDBORN_ARCH_CONFIG.selectors.statusBadge);
-    const textEl = this.dom.getElement(VOIDBORN_ARCH_CONFIG.selectors.statusText);
-    if (indicatorEl) {
-      indicatorEl.classList.remove("offline", "active");
-      indicatorEl.classList.add(indicatorClass);
-    }
-    if (textEl) {
-      textEl.textContent = statusText;
-      textEl.style.color = statusColor;
-      textEl.style.fontWeight = "bold";
-      textEl.style.textShadow = `0 0 10px ${statusColor}40`;
-    }
-  }
-}
-class NavigationManager {
-  constructor() {
-    this.dom = DOMHandler.instance;
-    this.isActive = false;
-  }
-  initializeNavigation() {
-    this.attachEventListeners();
-    this.highlightCurrentPage();
-  }
-  attachEventListeners() {
-    const hamburger = this.dom.getElement(VOIDBORN_ARCH_CONFIG.selectors.hamburgerBtn);
-    const closeBtn = this.dom.getElement(VOIDBORN_ARCH_CONFIG.selectors.closeMenuBtn);
-    if (hamburger) {
-      hamburger.addEventListener("click", () => this.toggleMobileInterface(true));
-    }
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => this.toggleMobileInterface(false));
-    }
-    window.addEventListener("scroll", VoidUtils.debounce(() => this.handleScrollPhysics(), 10));
-  }
-  handleScrollPhysics() {
-    const scrollY = window.scrollY;
-    const navElement = this.dom.getElement(VOIDBORN_ARCH_CONFIG.selectors.navWrapper);
-    const threshold = 50;
-    if (!navElement) return;
-    if (scrollY > threshold) {
-      navElement.classList.add("scrolled");
-      navElement.style.boxShadow = "0 10px 30px rgba(0,0,0,0.8)";
-    } else {
-      navElement.classList.remove("scrolled");
-      navElement.style.boxShadow = "none";
-    }
-  }
-  toggleMobileInterface(shouldOpen) {
-    this.isActive = shouldOpen;
-    const overlay = this.dom.getElement(VOIDBORN_ARCH_CONFIG.selectors.mobileOverlay);
-    if (!overlay) return;
-    if (shouldOpen) {
-      overlay.classList.add("active");
-      this.dom.toggleBodyScroll(true);
-      this.sequenceMobileAnimations();
-    } else {
-      overlay.classList.remove("active");
-      this.dom.toggleBodyScroll(false);
-    }
-  }
-  sequenceMobileAnimations() {
-    const links = this.dom.getAllElements(".mobile-nav-link");
-    links.forEach((link, index) => {
-      link.style.opacity = "0";
-      link.style.transform = "translateY(20px)";
-      setTimeout(() => {
-        link.style.transition = "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-        link.style.opacity = "1";
-        link.style.transform = "translateY(0)";
-      }, 150 + (index * 75));
-    });
-  }
-  highlightCurrentPage() {
-    const currentPath = window.location.pathname.split("/").pop() || "index.html";
-    const links = this.dom.getAllElements(VOIDBORN_ARCH_CONFIG.selectors.navItems);
-    links.forEach(link => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("current-page");
-        link.style.color = VOIDBORN_ARCH_CONFIG.theme.primaryColor;
-      }
-    });
-    const mobileLinks = this.dom.getAllElements(".mobile-nav-link");
-    mobileLinks.forEach(link => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("mobile-active");
-      }
-    });
-  }
-}
-class PhysicsEngine {
-  constructor() {
-    this.canvas = document.createElement("canvas");
-    this.ctx = this.canvas.getContext("2d");
-    this.width = 0;
-    this.height = 0;
-    this.particles = [];
-    this.parent = document.querySelector(".hero-section-master");
-    this.animationId = null;
-  }
-  initializeSystem() {
-    if (!this.parent) return;
-    this.setupCanvas();
-    this.createParticles();
-    this.startSimulation();
-    window.addEventListener("resize", VoidUtils.debounce(() => this.resizeCanvas(), 200));
-  }
-  setupCanvas() {
-    this.canvas.id = VOIDBORN_ARCH_CONFIG.physics.canvasId;
-    this.canvas.style.position = "absolute";
-    this.canvas.style.top = "0";
-    this.canvas.style.left = "0";
-    this.canvas.style.zIndex = "1";
-    this.canvas.style.pointerEvents = "none";
-    this.parent.appendChild(this.canvas);
-    this.resizeCanvas();
-  }
-  resizeCanvas() {
-    this.width = this.parent.offsetWidth;
-    this.height = this.parent.offsetHeight;
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-    if (this.particles.length === 0) {
-      this.createParticles();
-    }
-  }
-  createParticles() {
-    this.particles = [];
-    const count = VOIDBORN_ARCH_CONFIG.physics.particleCount;
-    for (let i = 0; i < count; i++) {
-      this.particles.push({
-        x: Math.random() * this.width,
-        y: Math.random() * this.height,
-        vx: (Math.random() - 0.5) * VOIDBORN_ARCH_CONFIG.physics.baseVelocity,
-        vy: (Math.random() - 0.5) * VOIDBORN_ARCH_CONFIG.physics.baseVelocity,
-        size: Math.random() * 2 + 1,
-        color: VOIDBORN_ARCH_CONFIG.theme.primaryColor
-      });
-    }
-  }
-  calculatePhysics() {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0 || p.x > this.width) p.vx *= -1;
-      if (p.y < 0 || p.y > this.height) p.vy *= -1;
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = p.color;
-      this.ctx.fill();
-    });
-  }
-  renderConnections() {
-    const threshold = VOIDBORN_ARCH_CONFIG.physics.connectionDistance;
-    for (let i = 0; i < this.particles.length; i++) {
-      for (let j = i + 1; j < this.particles.length; j++) {
-        const p1 = this.particles[i];
-        const p2 = this.particles[j];
-        const dx = p1.x - p2.x;
-        const dy = p1.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < threshold) {
-          const alpha = 1 - (dist / threshold);
-          this.ctx.beginPath();
-          this.ctx.strokeStyle = `rgba(184, 115, 51, ${alpha * 0.4})`;
-          this.ctx.lineWidth = 1;
-          this.ctx.moveTo(p1.x, p1.y);
-          this.ctx.lineTo(p2.x, p2.y);
-          this.ctx.stroke();
+    update(key, value) {
+        if (this.state[key] !== value) {
+            this.state[key] = value;
+            this.notify(key, value);
         }
-      }
     }
-  }
-  startSimulation() {
-    const loop = () => {
-      this.calculatePhysics();
-      this.renderConnections();
-      this.animationId = requestAnimationFrame(loop);
-    };
-    loop();
-  }
+    get(key) {
+        return this.state[key];
+    }
+    subscribe(callback) {
+        this.observers.push(callback);
+    }
+    notify(key, value) {
+        this.observers.forEach(obs => obs(key, value, this.state));
+    }
 }
-class AnimationObserver {
-  constructor() {
-    this.observerOptions = {
-      threshold: 0.15,
-      rootMargin: "0px"
-    };
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => this.handleIntersection(entry));
-    }, this.observerOptions);
-  }
-  initializeObserver() {
-    const elements = document.querySelectorAll(VOIDBORN_ARCH_CONFIG.selectors.scrollElements);
-    elements.forEach((el, index) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(30px)";
-      el.style.transition = "opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-      this.observer.observe(el);
-    });
-  }
-  handleIntersection(entry) {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0)";
-      this.observer.unobserve(el);
-    }
-  }
-}
-class ValidationHandler {
-  constructor() {
-    this.form = document.getElementById("primary-dispatch-form");
-    this.config = {
-      phonePattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im,
-      nameMinLength: 2,
-      detailsMinLength: 10
-    };
-  }
-  initializeValidation() {
-    if (!this.form) return;
-    this.setupFieldListeners();
-    this.setupFormSubmission();
-  }
-  setupFieldListeners() {
-    const phoneInput = this.form.querySelector("input[name='phone']");
-    if (phoneInput) {
-      phoneInput.addEventListener("input", (e) => {
-        e.target.value = VoidUtils.formatPhoneNumber(e.target.value);
-        this.validateField(e.target);
-      });
-    }
-    const inputs = this.form.querySelectorAll("input, textarea, select");
-    inputs.forEach(input => {
-      input.addEventListener("blur", () => this.validateField(input));
-      input.addEventListener("focus", () => this.resetFieldState(input));
-    });
-  }
-  resetFieldState(input) {
-    input.style.borderColor = "#1e1e1e";
-    input.style.backgroundColor = VOIDBORN_ARCH_CONFIG.theme.secondaryColor;
-  }
-  validateField(input) {
-    let isValid = true;
-    const value = input.value.trim();
-    if (input.name === "phone") {
-      isValid = this.config.phonePattern.test(value) && value.length >= 10;
-    } else if (input.name === "name") {
-      isValid = value.length >= this.config.nameMinLength;
-    } else if (input.name === "details") {
-      isValid = value.length >= this.config.detailsMinLength;
-    } else if (input.hasAttribute("required")) {
-      isValid = value.length > 0;
-    }
-    if (!isValid) {
-      this.markInvalid(input);
-    } else {
-      this.markValid(input);
-    }
-    return isValid;
-  }
-  markValid(input) {
-    input.style.borderColor = VOIDBORN_ARCH_CONFIG.theme.successColor;
-    input.style.backgroundColor = `${VOIDBORN_ARCH_CONFIG.theme.successColor}10`;
-  }
-  markInvalid(input) {
-    input.style.borderColor = VOIDBORN_ARCH_CONFIG.theme.alertColor;
-    input.style.animation = "shake 0.4s ease-in-out";
-    setTimeout(() => {
-      input.style.animation = "none";
-    }, 400);
-  }
-  setupFormSubmission() {
-    this.form.addEventListener("submit", (e) => {
-      const inputs = this.form.querySelectorAll("input, textarea, select");
-      let formIsValid = true;
-      inputs.forEach(input => {
-        if (!this.validateField(input)) {
-          formIsValid = false;
+const AppState = new StateManager();
+class DOMRef {
+    static get(selector, all = false, parent = document) {
+        if (all) {
+            return [...parent.querySelectorAll(selector)];
         }
-      });
-      if (!formIsValid) {
-        e.preventDefault();
-        const btn = this.form.querySelector("button");
-        btn.textContent = "VALIDATION ERROR // RETRY";
-        btn.style.backgroundColor = VOIDBORN_ARCH_CONFIG.theme.alertColor;
+        return parent.querySelector(selector);
+    }
+    static create(tag, classes = [], content = "") {
+        const el = document.createElement(tag);
+        if (classes.length) el.classList.add(...classes);
+        if (content) el.innerHTML = content;
+        return el;
+    }
+    static bind(element, event, handler) {
+        if (element) {
+            element.addEventListener(event, handler);
+        }
+    }
+}
+class BootSequence {
+    constructor() {
+        this.loader = DOMRef.get("#master-loader");
+        this.bar = DOMRef.get("#initialization-bar");
+        this.body = document.body;
+        this.init();
+    }
+    init() {
+        if (!this.loader) return;
+        window.scrollTo(0, 0);
+        this.startLoad();
+    }
+    startLoad() {
+        let width = 0;
+        const interval = setInterval(() => {
+            width += Math.random() * 5;
+            if (width >= 100) {
+                width = 100;
+                clearInterval(interval);
+                this.completeLoad();
+            }
+            if (this.bar) this.bar.style.width = width + "%";
+        }, 30);
+    }
+    completeLoad() {
         setTimeout(() => {
-          btn.textContent = "TRANSMIT REQUEST";
-          btn.style.backgroundColor = "";
-        }, 2000);
-      } else {
-        const btn = this.form.querySelector("button");
-        const originalText = btn.innerText;
-        btn.innerText = "ENCRYPTING DATA STREAM...";
-        btn.style.opacity = "0.7";
-        btn.style.cursor = "wait";
-        const successMessage = document.createElement("div");
-        successMessage.textContent = "HANDSHAKE INITIATED...";
-        successMessage.style.color = VOIDBORN_ARCH_CONFIG.theme.successColor;
-        successMessage.style.marginTop = "10px";
-        this.form.appendChild(successMessage);
-      }
-    });
-  }
-}
-class DataStreamTicker {
-  constructor() {
-    this.track = document.querySelector(VOIDBORN_ARCH_CONFIG.selectors.dynamicTicker);
-    this.messages = [
-      "24/7 EMERGENCY DISPATCH",
-      "LICENSED BONDED INSURED",
-      "COPPER SPECIALISTS",
-      "SLAB LEAK DETECTION",
-      "TANKLESS SYSTEM EXPERTS",
-      "NO HIDDEN FEES PROTOCOL",
-      "MASTER MECHANICS ON STANDBY"
-    ];
-  }
-  initializeTicker() {
-    if (!this.track) return;
-    this.buildTickerStream();
-  }
-  buildTickerStream() {
-    this.track.innerHTML = "";
-    const fragment = document.createDocumentFragment();
-    this.messages.forEach(msg => {
-      const div = document.createElement("div");
-      div.className = "ticker-item-box";
-      div.textContent = msg;
-      div.style.padding = "0 40px";
-      div.style.color = VOIDBORN_ARCH_CONFIG.theme.secondaryColor;
-      div.style.fontWeight = "800";
-      fragment.appendChild(div);
-    });
-    this.track.appendChild(fragment);
-    const clone = this.track.cloneNode(true);
-    while (clone.firstChild) {
-      this.track.appendChild(clone.firstChild);
+            this.body.classList.remove("system-initializing", "system-loading");
+            this.body.classList.add("system-active");
+            AppState.update("loading", false);
+            this.removeCurtain();
+        }, 500);
     }
-  }
+    removeCurtain() {
+        this.loader.style.opacity = "0";
+        this.loader.style.pointerEvents = "none";
+        setTimeout(() => {
+            this.loader.remove();
+            AnimationEngine.triggerIntro();
+        }, 800);
+    }
 }
-class SecurityEffect {
-  constructor() {
-    this.element = document.querySelector(VOIDBORN_ARCH_CONFIG.selectors.securityBadge);
-    this.glitchChars = "!<>-_\\/[]{}—=+*^?#________";
-  }
-  initializeEffect() {
-    if (!this.element) return;
-    this.element.addEventListener("mouseenter", () => {
-      this.triggerGlitch();
-    });
-  }
-  triggerGlitch() {
-    const textNode = this.element;
-    const original = textNode.textContent;
-    let iteration = 0;
-    clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      textNode.textContent = original.split("").map((letter, index) => {
-        if (index < iteration) {
-          return original[index];
+class AnimationEngine {
+    constructor() {
+        this.targets = DOMRef.get(".reveal-on-scroll", true);
+        this.parallaxElements = DOMRef.get(".image-parallax-layer", true);
+        this.magneticButtons = DOMRef.get(".magnetic-btn", true);
+        this.tiltCards = DOMRef.get(".card-3d-hover", true);
+        this.init();
+    }
+    init() {
+        this.observeScroll();
+        this.setupParallax();
+        this.setupMagneticButtons();
+        this.setupTiltEffects();
+        this.handleNoiseCanvas();
+    }
+    static triggerIntro() {
+        const header = DOMRef.get(".reveal-header-load");
+        if (header) header.classList.add("active");
+    }
+    observeScroll() {
+        const observerConfig = {
+            root: null,
+            rootMargin: "0px",
+            threshold: SYSTEM_CONFIG.animation.revealThreshold
+        };
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    if (entry.target.hasAttribute("data-target")) {
+                        NumberCruncher.process(entry.target);
+                    }
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, observerConfig);
+        this.targets.forEach(el => observer.observe(el));
+    }
+    setupParallax() {
+        if (!this.parallaxElements.length) return;
+        window.addEventListener("scroll", () => {
+            const y = window.pageYOffset;
+            this.parallaxElements.forEach(el => {
+                const speed = 0.5;
+                el.style.transform = `translateY(${y * speed}px)`;
+            });
+        });
+    }
+    setupMagneticButtons() {
+        this.magneticButtons.forEach(btn => {
+            btn.addEventListener("mousemove", (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const deltaX = (x - centerX) / 8;
+                const deltaY = (y - centerY) / 8;
+                btn.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+            });
+            btn.addEventListener("mouseleave", () => {
+                btn.style.transform = `translate(0px, 0px)`;
+            });
+        });
+    }
+    setupTiltEffects() {
+        this.tiltCards.forEach(card => {
+            card.addEventListener("mousemove", (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.zIndex = "10";
+            });
+            card.addEventListener("mouseleave", () => {
+                card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+                card.style.zIndex = "1";
+            });
+        });
+    }
+    handleNoiseCanvas() {
+        const overlay = DOMRef.get("#noise-overlay");
+        if (!overlay) return;
+    }
+}
+class NumberCruncher {
+    static process(element) {
+        const target = parseInt(element.getAttribute("data-target"), 10);
+        if (isNaN(target)) return;
+        const duration = SYSTEM_CONFIG.animation.counterSpeed;
+        const frameDuration = 1000 / 60;
+        const totalFrames = Math.round(duration / frameDuration);
+        const easeOut = t => t * (2 - t);
+        let frame = 0;
+        const counter = setInterval(() => {
+            frame++;
+            const progress = easeOut(frame / totalFrames);
+            const currentCount = Math.round(target * progress);
+            if (parseInt(element.innerHTML) !== currentCount) {
+                element.innerHTML = currentCount + (element.innerHTML.includes("%") ? "%" : "+");
+            }
+            if (frame === totalFrames) {
+                clearInterval(counter);
+            }
+        }, frameDuration);
+    }
+}
+class NavigationController {
+    constructor() {
+        this.header = DOMRef.get(".main-navigation-wrapper");
+        this.mobileTrigger = DOMRef.get(".mobile-nav-trigger");
+        this.mobileOverlay = DOMRef.get("#mobile-menu-overlay");
+        this.closeTrigger = DOMRef.get(".mobile-close-action");
+        this.links = DOMRef.get(".mobile-link-large", true);
+        this.stickyStatus = false;
+        this.init();
+    }
+    init() {
+        if (!this.header) return;
+        window.addEventListener("scroll", this.handleScroll.bind(this));
+        if (this.mobileTrigger) {
+            this.mobileTrigger.addEventListener("click", this.toggleMenu.bind(this));
         }
-        return this.glitchChars[Math.floor(Math.random() * this.glitchChars.length)];
-      }).join("");
-      if (iteration >= original.length) {
-        clearInterval(this.interval);
-        textNode.textContent = original;
-      }
-      iteration += 1 / 3;
-    }, 30);
-  }
-}
-class CoreSystem {
-  constructor() {
-    this.domHandler = DOMHandler.instance;
-    this.timeManager = new TimeManager();
-    this.navigationManager = new NavigationManager();
-    this.physicsEngine = new PhysicsEngine();
-    this.animationObserver = new AnimationObserver();
-    this.validationHandler = new ValidationHandler();
-    this.ticker = new DataStreamTicker();
-    this.security = new SecurityEffect();
-  }
-  boot() {
-    try {
-      this.logSystemStart();
-      this.timeManager.initializeClockCycle();
-      this.navigationManager.initializeNavigation();
-      this.physicsEngine.initializeSystem();
-      this.animationObserver.initializeObserver();
-      this.validationHandler.initializeValidation();
-      this.ticker.initializeTicker();
-      this.security.initializeEffect();
-      this.enableGlobalGuards();
-      console.log("%c SYSTEM OPTIMAL ", "background: #00ff66; color: black; padding: 2px 5px; border-radius: 2px;");
-    } catch (error) {
-      console.error("CRITICAL SYSTEM FAILURE: ", error);
+        if (this.closeTrigger) {
+            this.closeTrigger.addEventListener("click", this.closeMenu.bind(this));
+        }
+        this.links.forEach(link => {
+            link.addEventListener("click", this.closeMenu.bind(this));
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && AppState.get("menuOpen")) {
+                this.closeMenu();
+            }
+        });
+        this.highlightActivePage();
     }
-  }
-  logSystemStart() {
-    const style = "background: #0a0a0a; color: #b87333; padding: 10px; border: 1px solid #b87333; font-weight: bold;";
-    console.log(`%c PT PLUMBING INC. \n ARCHITECTURE: ${VOIDBORN_ARCH_CONFIG.system.id} \n VERSION: ${VOIDBORN_ARCH_CONFIG.system.version} `, style);
-  }
-  enableGlobalGuards() {
-    document.addEventListener("contextmenu", (event) => {
-      if (process.env.NODE_ENV === 'production') {
-        event.preventDefault();
-        return false;
-      }
-    });
-    document.querySelectorAll("img").forEach(img => {
-      img.addEventListener("dragstart", (e) => e.preventDefault());
-    });
-  }
+    handleScroll() {
+        const y = window.scrollY;
+        if (y > SYSTEM_CONFIG.ui.menuStickyPoint) {
+            if (!this.stickyStatus) {
+                this.header.classList.add("scrolled-active");
+                this.stickyStatus = true;
+            }
+        } else {
+            if (this.stickyStatus) {
+                this.header.classList.remove("scrolled-active");
+                this.stickyStatus = false;
+            }
+        }
+        AppState.update("scrolled", this.stickyStatus);
+    }
+    toggleMenu() {
+        const isOpen = AppState.get("menuOpen");
+        if (isOpen) this.closeMenu();
+        else this.openMenu();
+    }
+    openMenu() {
+        this.mobileOverlay.setAttribute("aria-hidden", "false");
+        this.mobileOverlay.classList.add("is-visible");
+        document.body.style.overflow = "hidden";
+        AppState.update("menuOpen", true);
+        const links = DOMRef.get(".staggered-entry", true);
+        links.forEach((link, idx) => {
+            link.style.animationDelay = `${(idx * 0.1) + 0.2}s`;
+            link.classList.add("animate-in");
+        });
+    }
+    closeMenu() {
+        this.mobileOverlay.setAttribute("aria-hidden", "true");
+        this.mobileOverlay.classList.remove("is-visible");
+        document.body.style.overflow = "";
+        AppState.update("menuOpen", false);
+        const links = DOMRef.get(".staggered-entry", true);
+        links.forEach(link => {
+            link.classList.remove("animate-in");
+            link.style.animationDelay = "0s";
+        });
+    }
+    highlightActivePage() {
+        const currentPath = window.location.pathname;
+        const desktopLinks = DOMRef.get(".nav-link-anchor", true);
+        desktopLinks.forEach(link => {
+            const href = link.getAttribute("href");
+            if (currentPath.includes(href) && href !== "index.html") {
+                link.classList.add("current-active-node");
+            } else if ((currentPath.endsWith("/") || currentPath.endsWith("index.html")) && href === "index.html") {
+                link.classList.add("current-active-node");
+            }
+        });
+    }
 }
-document.addEventListener("DOMContentLoaded", () => {
-  const kernel = new CoreSystem();
-  kernel.boot();
-});
-window.addEventListener("load", () => {
-  const loadOverlay = document.createElement("div");
-  loadOverlay.id = "system-boot-overlay";
-  document.body.appendChild(loadOverlay);
-  setTimeout(() => {
-    document.body.classList.add("system-active");
-  }, 100);
-});
-if (window.NodeList && !NodeList.prototype.forEach) {
-  NodeList.prototype.forEach = Array.prototype.forEach;
+class TimeKeeperSystem {
+    constructor() {
+        this.clockElement = DOMRef.get("#live-clock");
+        this.statusIndicators = DOMRef.get(".status-led", true);
+        this.init();
+    }
+    init() {
+        if (this.clockElement) {
+            this.startClock();
+        }
+        if (this.statusIndicators.length) {
+            this.startBlinkRoutine();
+        }
+    }
+    startClock() {
+        const update = () => {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, "0");
+            const m = String(now.getMinutes()).padStart(2, "0");
+            const s = String(now.getSeconds()).padStart(2, "0");
+            if (this.clockElement) {
+                this.clockElement.innerText = `${h}:${m}:${s}`;
+                this.clockElement.setAttribute("datetime", now.toISOString());
+            }
+        };
+        setInterval(update, 1000);
+        update();
+    }
+    startBlinkRoutine() {
+        this.statusIndicators.forEach(led => {
+            setInterval(() => {
+                led.style.opacity = Math.random() > 0.8 ? "0.4" : "1";
+            }, 1500);
+        });
+    }
 }
-String.prototype.capitalize = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-console.log("VOIDBORN NODES: SECURE");
-const handlePageTransition = (url) => {
-  document.body.style.opacity = "0";
-  setTimeout(() => {
-    window.location.href = url;
-  }, 300);
-};
-document.querySelectorAll("a").forEach(link => {
-  const href = link.getAttribute("href");
-  if (href && href.startsWith("/") || href.includes(".html")) {
-    link.addEventListener("click", (e) => {
-      const target = link.getAttribute("target");
-      if (target !== "_blank") {
+class FormHandlerProtocol {
+    constructor() {
+        this.form = DOMRef.get("#dispatch-form");
+        this.successModal = DOMRef.get("#dispatch-success-modal");
+        this.successClose = DOMRef.get("#success-close-btn");
+        this.phoneInputs = DOMRef.get("input[type='tel']", true);
+        this.inputs = DOMRef.get("input, textarea, select", true, this.form);
+        this.init();
+    }
+    init() {
+        if (!this.form) return;
+        this.form.addEventListener("submit", this.handleSubmit.bind(this));
+        if (this.successClose) {
+            this.successClose.addEventListener("click", this.closeModal.bind(this));
+        }
+        this.setupMasking();
+        this.setupFloatingLabels();
+        this.checkForURLParams();
+    }
+    setupMasking() {
+        this.phoneInputs.forEach(input => {
+            input.addEventListener("input", (e) => {
+                let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+                e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+            });
+        });
+    }
+    setupFloatingLabels() {
+        this.inputs.forEach(input => {
+            input.addEventListener("focus", () => input.parentNode.classList.add("focused"));
+            input.addEventListener("blur", () => {
+                if (!input.value) input.parentNode.classList.remove("focused");
+            });
+        });
+    }
+    async handleSubmit(e) {
         e.preventDefault();
-        handlePageTransition(href);
-      }
-    });
-  }
-});
-class EasterEgg {
-  constructor() {
-    this.sequence = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
-    this.currentPosition = 0;
-    this.init();
-  }
-  init() {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === this.sequence[this.currentPosition]) {
-        this.currentPosition++;
-        if (this.currentPosition === this.sequence.length) {
-          this.activate();
-          this.currentPosition = 0;
+        if (AppState.get("formSubmitting")) return;
+        if (!this.validate()) return;
+        AppState.update("formSubmitting", true);
+        const submitBtn = this.form.querySelector(".submit-transmission-btn");
+        const btnText = submitBtn.querySelector(".btn-text");
+        const spinner = submitBtn.querySelector(".loading-spinner");
+        const originalText = btnText.innerText;
+        btnText.style.opacity = "0";
+        spinner.style.display = "block";
+        submitBtn.classList.add("processing");
+        await this.simulateNetworkDelay(2500);
+        submitBtn.classList.remove("processing");
+        spinner.style.display = "none";
+        btnText.style.opacity = "1";
+        btnText.innerText = "TRANSMISSION SECURED";
+        this.form.reset();
+        this.showSuccessModal();
+        setTimeout(() => {
+            btnText.innerText = originalText;
+            AppState.update("formSubmitting", false);
+        }, 5000);
+    }
+    validate() {
+        let valid = true;
+        this.inputs.forEach(input => {
+            if (input.hasAttribute("required") && !input.value.trim()) {
+                this.markInvalid(input);
+                valid = false;
+            } else if (input.type === "email" && input.value) {
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!regex.test(input.value)) {
+                    this.markInvalid(input);
+                    valid = false;
+                }
+            } else {
+                this.markValid(input);
+            }
+        });
+        if (!valid) this.shakeForm();
+        return valid;
+    }
+    markInvalid(input) {
+        input.parentElement.classList.add("error-state");
+        input.parentElement.classList.remove("valid-state");
+        input.addEventListener("input", () => {
+            input.parentElement.classList.remove("error-state");
+        }, { once: true });
+    }
+    markValid(input) {
+        input.parentElement.classList.remove("error-state");
+        input.parentElement.classList.add("valid-state");
+    }
+    shakeForm() {
+        this.form.classList.add("shake-anim");
+        setTimeout(() => this.form.classList.remove("shake-anim"), 500);
+    }
+    simulateNetworkDelay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    showSuccessModal() {
+        if (!this.successModal) {
+            alert("Transmission Logged Successfully. Agent dispatched.");
+            return;
         }
-      } else {
-        this.currentPosition = 0;
-      }
-    });
-  }
-  activate() {
-    alert("SYSTEM OVERRIDE: GOD MODE ENABLED");
-    document.documentElement.style.setProperty("--color-copper-primary", "#ff00ff");
-    document.documentElement.style.setProperty("--color-black-base", "#000000");
-  }
+        this.successModal.classList.add("visible");
+        this.successModal.setAttribute("aria-hidden", "false");
+    }
+    closeModal() {
+        this.successModal.classList.remove("visible");
+        this.successModal.setAttribute("aria-hidden", "true");
+    }
+    checkForURLParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get("type");
+        const subj = urlParams.get("subj");
+        const subjectField = DOMRef.get("#f-service");
+        const messageField = DOMRef.get("#f-message");
+        if (type && subjectField) {
+            switch(type) {
+                case "leak": subjectField.value = "leak_detect"; break;
+                case "drain": subjectField.value = "drain_clean"; break;
+                case "heater": subjectField.value = "water_heater"; break;
+                case "repair": subjectField.value = "emergency"; break;
+            }
+        }
+        if (subj === "career" && messageField) {
+            messageField.value = "RE: Career Application. I am a licensed technician interested in joining the unit. My qualifications are...";
+            if (subjectField) subjectField.value = "emergency"; 
+        }
+    }
 }
-new EasterEgg();
+class TerminalWriter {
+    constructor() {
+        this.monitor = DOMRef.get("#fact-display-monitor");
+        this.dataArray = [
+            "Initializing diagnostics protocol...",
+            "Loading client reviews database...",
+            "Review Log 492: 'Precision work found leak in 20 mins.'",
+            "Review Log 501: 'Best pricing in the sector.'",
+            "Checking local grid status... SECURE."
+        ];
+        this.idx = 0;
+        this.interval = null;
+        this.init();
+    }
+    init() {
+        if (!this.monitor) return;
+        this.triggerNewFact = this.triggerNewFact.bind(this);
+        const refreshBtns = DOMRef.get(".refresh-data-btn", true);
+        refreshBtns.forEach(btn => btn.addEventListener("click", this.triggerNewFact));
+        this.typeWriterEffect(this.monitor.innerText);
+    }
+    typeWriterEffect(text) {
+        if (!this.monitor) return;
+        this.monitor.innerHTML = "";
+        let i = 0;
+        const speed = SYSTEM_CONFIG.ui.typingSpeed;
+        const type = () => {
+            if (i < text.length) {
+                this.monitor.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        };
+        type();
+    }
+    triggerNewFact() {
+        this.monitor.style.opacity = 0;
+        setTimeout(() => {
+            this.idx = (this.idx + 1) % this.dataArray.length;
+            this.typeWriterEffect(this.dataArray[this.idx]);
+            this.monitor.style.opacity = 1;
+        }, 300);
+    }
+}
+class RadarSystem {
+    constructor() {
+        this.map = DOMRef.get(".radar-map-container");
+        this.dots = DOMRef.get(".location-dot", true);
+        this.init();
+    }
+    init() {
+        if (!this.map) return;
+        this.startPulse();
+        this.activateTooltips();
+    }
+    startPulse() {
+        const ping = () => {
+            const randomDot = this.dots[Math.floor(Math.random() * this.dots.length)];
+            randomDot.classList.add("active-ping");
+            setTimeout(() => {
+                randomDot.classList.remove("active-ping");
+            }, 2000);
+        };
+        setInterval(ping, 2500);
+    }
+    activateTooltips() {
+        this.dots.forEach(dot => {
+            dot.addEventListener("mouseenter", () => {
+                const label = dot.dataset.loc;
+                const status = DOMRef.get(".map-ui-status");
+                if (status) status.innerHTML = `SCANNING: ${label}... <span style='color:#0f0'>CONNECTED</span>`;
+            });
+            dot.addEventListener("mouseleave", () => {
+                const status = DOMRef.get(".map-ui-status");
+                if (status) status.innerHTML = `<span class="ui-row">UNITS ACTIVE: 4</span><span class="ui-row">GRID STATUS: SECURE</span>`;
+            });
+        });
+    }
+}
+class GlobalAccordion {
+    constructor() {
+        this.details = DOMRef.get("details", true);
+        this.init();
+    }
+    init() {
+        this.details.forEach(targetDetail => {
+            targetDetail.addEventListener("click", () => {
+                this.details.forEach(detail => {
+                    if (detail !== targetDetail) {
+                        detail.removeAttribute("open");
+                    }
+                });
+            });
+        });
+    }
+}
+class StickyCallButton {
+    constructor() {
+        this.element = DOMRef.get("#sticky-call-btn-wrapper");
+        this.init();
+    }
+    init() {
+        if (!this.element) return;
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 400) {
+                this.element.classList.remove("hidden-on-load");
+                this.element.classList.add("visible");
+            } else {
+                this.element.classList.remove("visible");
+            }
+        });
+    }
+}
+class ServiceProtocolRouter {
+    constructor() {
+        this.currentPage = AppState.get("page");
+        this.init();
+    }
+    init() {
+        if (this.currentPage !== "services") return;
+        this.highlightActiveSection();
+    }
+    highlightActiveSection() {
+        if (window.location.hash) {
+            const id = window.location.hash.replace("#", "");
+            // Logic to highlight service cards based on hash would go here
+            // Mapping existing IDs or scrolling to position
+        }
+    }
+}
+class FooterInteractivity {
+    constructor() {
+        this.orb = DOMRef.get(".floating-contact-orb");
+        this.init();
+    }
+    init() {
+        if (!this.orb) return;
+        this.orb.addEventListener("mouseenter", () => {
+            this.orb.innerHTML = "CONTACT?";
+            this.orb.style.width = "100px";
+            this.orb.style.borderRadius = "50px";
+        });
+        this.orb.addEventListener("mouseleave", () => {
+            this.orb.innerHTML = "";
+            this.orb.style.width = "50px";
+            this.orb.style.borderRadius = "50%";
+        });
+        this.orb.addEventListener("click", () => {
+            window.location.href = "contact.html";
+        });
+    }
+}
+const CanvasEffect = {
+    drawGrid: function(ctx, w, h) {
+        ctx.strokeStyle = "rgba(184, 115, 51, 0.05)";
+        ctx.lineWidth = 1;
+        const step = 40;
+        for (let x = 0; x <= w; x += step) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, h);
+            ctx.stroke();
+        }
+        for (let y = 0; y <= h; y += step) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+        }
+    },
+    init: function() {
+        const canvas = document.createElement("canvas");
+        const container = DOMRef.get(".hero-bg-mesh");
+        if (!container) return;
+        container.appendChild(canvas);
+        const resize = () => {
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            const ctx = canvas.getContext("2d");
+            this.drawGrid(ctx, canvas.width, canvas.height);
+        };
+        window.addEventListener("resize", resize);
+        resize();
+    }
+};
+document.addEventListener("DOMContentLoaded", () => {
+    new BootSequence();
+    new NavigationController();
+    new TimeKeeperSystem();
+    new AnimationEngine();
+    new TerminalWriter();
+    new GlobalAccordion();
+    new StickyCallButton();
+    new FooterInteractivity();
+    if (document.querySelector(".radar-map-container")) {
+        new RadarSystem();
+    }
+    if (document.querySelector("#dispatch-form")) {
+        new FormHandlerProtocol();
+    }
+    if (document.querySelector(".hero-bg-mesh")) {
+        CanvasEffect.init();
+    }
+    new ServiceProtocolRouter();
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) {
+            document.body.classList.remove("system-loading");
+            DOMRef.get("#master-loader")?.remove();
+        }
+    });
+    console.log("%c PT PLUMBING SYSTEM %c ACTIVE v2.4 ", "background: #000; color: #fff; padding: 5px; border: 1px solid #B87333;", "background: #B87333; color: #fff; padding: 5px;");
+});
+const FileUploader = {
+    init: function() {
+        const zone = DOMRef.get("#drop-zone-area");
+        const input = DOMRef.get("#f-file");
+        if (!zone || !input) return;
+        const preventDefaults = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        };
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            zone.addEventListener(eventName, preventDefaults, false);
+        });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            zone.addEventListener(eventName, () => zone.classList.add('highlight'), false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            zone.addEventListener(eventName, () => zone.classList.remove('highlight'), false);
+        });
+        zone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            FileUploader.handleFiles(files, zone);
+        });
+        input.addEventListener('change', function() {
+            FileUploader.handleFiles(this.files, zone);
+        });
+        zone.addEventListener('click', () => input.click());
+    },
+    handleFiles: function(files, uiContainer) {
+        if (!files.length) return;
+        const textDisplay = uiContainer.querySelector(".upload-text");
+        textDisplay.innerText = `${files.length} FILE(S) STAGED FOR UPLOAD`;
+        uiContainer.classList.add("file-staged");
+        const existingList = uiContainer.querySelectorAll(".file-preview-list");
+        if (existingList) existingList.forEach(l => l.remove());
+        const list = DOMRef.create("div", ["file-preview-list"]);
+        [...files].forEach(file => {
+            const item = DOMRef.create("div", ["file-item"]);
+            item.innerText = `${file.name} (${Math.round(file.size / 1024)}KB)`;
+            list.appendChild(item);
+        });
+        uiContainer.appendChild(list);
+    }
+};
+if (document.querySelector("#drop-zone-area")) {
+    FileUploader.init();
+}
+class CookieController {
+    static get(name) {
+        const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return v ? v[2] : null;
+    }
+    static set(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + 24*60*60*1000*days);
+        document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+    }
+}
+class UserPreferences {
+    constructor() {
+        this.highContrast = false;
+        this.init();
+    }
+    init() {
+        this.checkOSPreference();
+        this.loadSaved();
+    }
+    checkOSPreference() {
+        if (window.matchMedia && window.matchMedia('(prefers-contrast: more)').matches) {
+            this.highContrast = true;
+            this.apply();
+        }
+    }
+    loadSaved() {
+        const saved = CookieController.get("pt_theme_pref");
+        if (saved === "high_contrast") {
+            this.highContrast = true;
+            this.apply();
+        }
+    }
+    apply() {
+        if (this.highContrast) {
+            document.body.classList.add("access-mode-high-contrast");
+        }
+    }
+    toggle() {
+        this.highContrast = !this.highContrast;
+        document.body.classList.toggle("access-mode-high-contrast");
+        CookieController.set("pt_theme_pref", this.highContrast ? "high_contrast" : "standard", 30);
+    }
+}
+const ThemeHandler = new UserPreferences();
+class TickerTape {
+    constructor() {
+        this.track = DOMRef.get(".ticker-track-mask");
+        this.items = DOMRef.get(".ticker-message-item", true);
+        if (this.track && this.items.length) {
+            this.cloneContent();
+        }
+    }
+    cloneContent() {
+    }
+}
+class ErrorBoundary {
+    static catchAll() {
+        window.addEventListener("error", (e) => {
+            console.warn("PT_SYSTEM_WARN: ", e.message);
+            const overlay = DOMRef.create("div", ["system-toast-error"], `SYSTEM ALERT: ${e.message}`);
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.remove(), 4000);
+        });
+    }
+}
+ErrorBoundary.catchAll();
+class ExternalLinkGuard {
+    constructor() {
+        this.links = DOMRef.get("a[target='_blank']", true);
+        this.init();
+    }
+    init() {
+        this.links.forEach(link => {
+            link.setAttribute("rel", "noopener noreferrer");
+            link.addEventListener("click", (e) => {
+                if (!confirm("NOTICE: You are leaving the PT Plumbing secure node. Proceed?")) {
+                    e.preventDefault();
+                }
+            });
+        });
+    }
+}
+new ExternalLinkGuard();
+const KonamiCode = {
+    sequence: ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'],
+    index: 0,
+    init: function() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === this.sequence[this.index]) {
+                this.index++;
+                if (this.index === this.sequence.length) {
+                    this.activateEgg();
+                    this.index = 0;
+                }
+            } else {
+                this.index = 0;
+            }
+        });
+    },
+    activateEgg: function() {
+        alert("ACCESS GRANTED: ADMIN CONSOLE [Simulated]");
+        document.documentElement.style.filter = "invert(1) hue-rotate(180deg)";
+    }
+};
+KonamiCode.init();
