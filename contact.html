@@ -3,86 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact PT Plumbing Inc. | 24/7 Dispatch</title>
-    <!-- Social Preview Logic -->
-    <meta property="og:title" content="PT Plumbing Inc. - Emergency Dispatch">
-    <meta property="og:description" content="Click to request immediate service. 24/7 Response time for active leaks.">
-    <meta property="og:image" content="assets/pt-logo-main.jpg">
+    <title>Dispatch | PT Plumbing</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="glass-nav">
         <div class="nav-container">
-            <a href="index.html" class="brand-logo">
-                <!-- Using Logo B (Text) here as it is wider -->
-                <img src="assets/pt-logo-text.png" alt="PT Plumbing" style="height: 50px; mix-blend-mode: screen;">
-            </a>
+            <a href="index.html" class="brand-logo">PT <span>Plumbing</span></a>
             <div class="desktop-menu">
-                <a href="index.html" class="menu-item">Home</a>
-                <a href="services.html" class="menu-item">Services</a>
-                <a href="about.html" class="menu-item">Our Story</a>
-                <a href="contact.html" class="menu-item active">Contact</a>
+                <a href="index.html">HOME</a>
+                <a href="services.html">SERVICES</a>
+                <a href="about.html">ABOUT</a>
+                <a href="contact.html" class="active">CONTACT</a>
             </div>
         </div>
     </nav>
-
-    <main>
-        <section class="contact-interface">
-            <div class="interface-container">
-                <div class="contact-details">
-                    <!-- Logo A (Shield) used here for trust -->
-                    <img src="assets/pt-logo-main.jpg" style="width: 120px; border-radius: 10px; margin-bottom: 20px;">
-                    <h2>Dispatch & HQ</h2>
-                    <p class="desc">Direct access to Master Plumbers. No call centers.</p>
-                    
-                    <div class="info-block">
-                        <h4>Emergencies</h4>
-                        <a href="tel:5551234567" class="phone-large">(555) 123-4567</a>
+    <section class="section-std">
+        <div class="section-head">
+            <h2>Direct Line Connection</h2>
+            <div class="copper-divider"></div>
+        </div>
+        <div class="contact-interface">
+            <div class="interface-wrapper">
+                <div class="details-side">
+                    <h3>Headquarters</h3>
+                    <p style="margin-bottom:30px;">Direct scheduling with no middle man.</p>
+                    <div style="margin-bottom: 20px;">
+                        <label style="color:var(--copper-primary); font-weight:bold;">PRIORITY VOICE</label>
+                        <div style="font-size:1.5rem; font-weight:bold;">(555) 123-4567</div>
+                    </div>
+                    <div>
+                        <label style="color:var(--copper-primary); font-weight:bold;">DIGITAL MAIL</label>
+                        <div style="font-size:1.1rem;">service@ptplumbing.com</div>
                     </div>
                 </div>
-
-                <div class="form-wrapper">
-                    <!-- ACTION REQUIRED: This form uses Formspree. It will ask you to verify your email once upon first submission. -->
-                    <form action="https://formspree.io/f/mqkvvjaz" method="POST" class="premium-form" id="contact-form">
-                        <h3>Secure Service Request</h3>
-                        
-                        <div class="input-group">
-                            <label>Full Name</label>
-                            <input type="text" name="name" required placeholder="Name">
-                        </div>
-                        <div class="input-group">
-                            <label>Phone (Mobile preferred)</label>
-                            <input type="tel" name="phone" required placeholder="(555) 123-4567">
-                        </div>
-                        <div class="input-group">
-                            <label>Issue Type</label>
-                            <select name="service" required>
-                                <option value="General">General Inquiry</option>
-                                <option value="Emergency">⚠️ Emergency (Leak/Flood)</option>
-                                <option value="Quote">Quote</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Details</label>
-                            <textarea name="message" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">Transmit Request</button>
+                <div class="form-side">
+                    <form id="dispatchForm" action="https://formspree.io/f/mqkvvjaz" method="POST">
+                        <label>CLIENT NAME</label>
+                        <input type="text" name="name" required placeholder="Jane Doe">
+                        <label>CONTACT NUMBER</label>
+                        <input type="tel" name="phone" required placeholder="(555) 000-0000">
+                        <label>MISSION TYPE</label>
+                        <select name="type">
+                            <option>General Service</option>
+                            <option>Emergency Leak</option>
+                            <option>System Install</option>
+                        </select>
+                        <label>MISSION BRIEF (DETAILS)</label>
+                        <textarea name="details" rows="4"></textarea>
+                        <button type="submit" class="submit-btn">TRANSMIT REQUEST</button>
                     </form>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="footer-bottom">
-            <div class="copyright">© 2025 PT Plumbing Inc. All Rights Reserved.</div>
-            <div class="created-by" style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 10px; opacity: 0.4;">
-                <span style="font-size: 0.8rem;">Digital Architecture by:</span>
-                <img src="assets/created-by-dye.png" alt="Dye Security" title="Dye Security" style="height: 20px;">
-                <img src="assets/created-by-void.jpg" alt="Voidborn" title="Voidborn" style="height: 20px; border-radius: 50%;">
-            </div>
         </div>
-    </footer>
+    </section>
+    <a href="tel:5551234567" class="mobile-bar">TAP TO CALL</a>
+    <script src="script.js"></script>
 </body>
 </html>
