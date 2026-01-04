@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispatch Uplink | PT Plumbing Inc. Casa Grande</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "mainEntity": {
+        "@type": "LocalBusiness",
+        "name": "PT Plumbing Inc.",
+        "telephone": "+15207057682",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "615 E. Florence Blvd.",
+          "addressLocality": "Casa Grande",
+          "addressRegion": "AZ",
+          "postalCode": "85122"
+        }
+      }
+    }
+    </script>
+</head>
+<body class="void">
+    <header class="command-node">
+        <nav class="uplink-nav">
+            <div class="brand"><a href="index.html" style="text-decoration:none; color:inherit;"><span class="conduit-text">PT</span> PLUMBING</a></div>
+            <div class="nav-links">
+                <a href="services.html">Capabilities</a>
+                <a href="about.html">Intel</a>
+                <a href="contact.html" class="conduit-text">Uplink</a>
+            </div>
+            <a href="tel:5207057682" class="emergency-trigger"><span class="pulse"></span> (520) 705-7682</a>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: 120px; padding-bottom: 8rem;">
+        <div class="contact-grid" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem;">
+            <div class="contact-intel" data-observe="fade-up">
+                <h1 class="heading-authoritative">Dispatch <span class="conduit-text">Uplink</span></h1>
+                <p class="specs">COMM_CHANNEL // PINAL_COUNTY_OFFICE</p>
+                
+                <div class="intel-block" style="margin-bottom: 3rem;">
+                    <h3 class="mono" style="color: var(--conduit); margin-bottom: 1rem;">DIRECT_WIRE</h3>
+                    <a href="tel:5207057682" style="font-size: 2rem; color: var(--text-high); text-decoration: none; font-family: var(--playfair);">(520) 705-7682</a>
+                    <p class="body-inter" style="color: var(--text-low); margin-top: 0.5rem;">Available 24/7 for emergency containment.</p>
+                </div>
+
+                <div class="intel-block">
+                    <h3 class="mono" style="color: var(--conduit); margin-bottom: 1rem;">HQ_LOCATION</h3>
+                    <p class="body-inter" style="color: var(--text-high);">615 E. Florence Blvd.<br>Casa Grande, AZ 85122</p>
+                    <p class="body-inter" style="color: var(--text-low); font-size: 0.85rem; margin-top: 1rem;">Serving: Casa Grande, Coolidge, Eloy, Arizona City.</p>
+                </div>
+            </div>
+
+            <div class="form-module" style="background: var(--surface); padding: 3rem; border: 1px solid rgba(184, 115, 51, 0.2);" data-observe="fade-up">
+                <form action="#" method="POST" id="dispatch-form">
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label class="mono-label">IDENTIFICATION</label>
+                        <input type="text" placeholder="FULL NAME" required style="width: 100%; background: var(--void); border: 1px solid var(--text-low); padding: 1rem; color: var(--text-high); font-family: var(--mono);">
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label class="mono-label">CONTACT_METHOD</label>
+                        <input type="tel" placeholder="PHONE NUMBER" required style="width: 100%; background: var(--void); border: 1px solid var(--text-low); padding: 1rem; color: var(--text-high); font-family: var(--mono);">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label class="mono-label">URGENCY_LEVEL</label>
+                        <select id="urgency-selector" style="width: 100%; background: var(--void); border: 1px solid var(--text-low); padding: 1rem; color: var(--text-high); font-family: var(--mono);">
+                            <option value="standard">STANDARD (Routine Maintenance)</option>
+                            <option value="high">HIGH (Active Leaks / No Water)</option>
+                            <option value="critical">CRITICAL (Flooding / Sewage)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 2.5rem;">
+                        <label class="mono-label">SITUATION_REPORT</label>
+                        <textarea placeholder="DESCRIBE THE ISSUE" rows="4" style="width: 100%; background: var(--void); border: 1px solid var(--text-low); padding: 1rem; color: var(--text-high); font-family: var(--mono);"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; border: none; cursor: pointer;">Initialize Dispatch</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="terminal-footer">
+        <div class="container grid-3">
+            <div class="footer-intel">
+                <p class="mono">PT PLUMBING INC.</p>
+                <p class="mono">CASA GRANDE, AZ</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="services.html">Capabilities</a>
+                <a href="about.html">Intel</a>
+            </div>
+            <div class="footer-legal">
+                <p class="mono">© 2026 // ZERO-BLOAT CODE</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
