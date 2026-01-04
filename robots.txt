@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://ECHOS-OF-THE-SHATTERED.github.io/sitemap.xml
